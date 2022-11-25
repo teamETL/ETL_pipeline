@@ -14,10 +14,13 @@ class Blog(models.Model):
     # 3. 작성일
     created_at = models.DateTimeField(auto_now_add=True)
 
-    # 4. 작성자 CASCADE( 사용자 정보삭제 시 게시글도 같이 삭제하는 Option )
+    # 4. 수정일
+    updated_at = models.DateTimeField(auto_now=True)
+
+    # 5. 작성자 CASCADE( 사용자 정보삭제 시 게시글도 같이 삭제하는 Option )
     user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
 
-    # 5. 본문
+    # 6. 본문
     body = models.TextField()
 
 

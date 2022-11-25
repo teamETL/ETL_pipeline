@@ -102,10 +102,14 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',  # 인증된 요청인지 확인
         'rest_framework.permissions.IsAdminUser',  # 관리자만 접근 가능
         'rest_framework.permissions.AllowAny',  # 누구나 접근 가능
+        
+        
     ),
     # JWT를 통한 인증 방식 사용
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ]
 }
 

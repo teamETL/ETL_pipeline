@@ -11,11 +11,11 @@
 
 
 from django.urls import path, include
-from .views import BlogViewSet
+from . import views
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
-router.register('blog', BlogViewSet)
+router.register(r'post', views.BlogViewSet)
 
 urlpatterns =[
     path('', include(router.urls))
