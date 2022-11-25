@@ -20,10 +20,11 @@ class UserManager(BaseUserManager):
         return user
 
     # 관리자 user 생성
-    def create_superuser(self, email, name, password=None):
+    def create_superuser(self, email, gender, name, password=None):
         user = self.create_user(
             email,
             password = password,
+            gender = gender,
             name = name
         )
         user.is_admin = True
@@ -67,4 +68,4 @@ class User(AbstractBaseUser):
         return self.is_admin
     
     class Meta:
-        db_table = 'userinfo' # 테이블명을 user로 설정
+        db_table = 'userinfo' # 테이블명을 userinfo로 설정
