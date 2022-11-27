@@ -2,6 +2,7 @@ from .models import Blog
 from .serializers import BlogSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
+from .permissions import IsUserOrReadonly
 """
 viewsets.ModelViewSet
 
@@ -29,6 +30,12 @@ mixins.DestroyModelMixin : destroy() 함수
 class BlogViewSet(viewsets.ModelViewSet):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
+    permission_classes = [
+        IsUserOrReadonly,
+    ]
+
+    def perfrom_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 # blog_list = BlogViewSet.as_view({

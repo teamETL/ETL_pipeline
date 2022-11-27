@@ -76,8 +76,13 @@ INSTALLED_APPS = [
     # Librarys
     'rest_framework',
     'rest_framework_simplejwt',
-    'rest_framework.authtoken',
+    'rest_framework_simplejwt.token_blacklist',
+    
+    # DRF Authentication
     'dj_rest_auth',
+    'rest_framework.authtoken',
+    
+    # signup
     'django.contrib.sites',
     'allauth',
     'allauth.account',
@@ -108,7 +113,7 @@ REST_FRAMEWORK = {
     # JWT를 통한 인증 방식 사용
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ]
 }
@@ -134,9 +139,9 @@ from datetime import timedelta
 
 # 추가적인 JWT_AUTH 설정 - 커스텀 필요
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
-    'ROTATE_REFRESH_TOKENS': False,
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30), 
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7), 
+    'ROTATE_REFRESH_TOKENS': False, # Token 재발급
     'BLACKLIST_AFTER_ROTATION': False,
     'UPDATE_LAST_LOGIN': False,
 
@@ -156,7 +161,7 @@ SIMPLE_JWT = {
 
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
     'TOKEN_TYPE_CLAIM': 'token_type',
-    'TOKEN_USER_CLASS': 'rest_framework_simplejwt.models.TokenUser',
+    'TOKEN_USER_CLASS': 'accounts.User',
 
     'JTI_CLAIM': 'jti',
 

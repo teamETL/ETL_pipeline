@@ -7,7 +7,7 @@ class UserManager(BaseUserManager):
         if not email:
             raise ValueError('must have user email')
         if not gender:
-            raise ValueError('must have user nickname')
+            raise ValueError('must have user gender')
         if not name:
             raise ValueError('must have user name')
         user = self.model(
@@ -40,8 +40,10 @@ class User(AbstractBaseUser):
     )
     id = models.AutoField(primary_key=True)
     email = models.EmailField(default='', max_length=100, null=False, blank=False, unique=True)
-    gender = models.CharField(default='', max_length=6, choices=GENDER_CHOICES, null=False, blank=False, unique=True)
+    gender = models.CharField(default='', max_length=6, choices=GENDER_CHOICES, null=False, blank=False)
+    nickname = models.CharField(default='', max_length=100, null=False, blank=False, unique=True)
     name = models.CharField(default='', max_length=100, null=False, blank=False)
+    created_at = models.DateTimeField(auto_now_add=True)
     
     # User 모델의 필수 field
     is_active = models.BooleanField(default=True)    
@@ -54,7 +56,7 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = 'email'
 
     # 필수로 작성해야하는 field
-    REQUIRED_FIELDS = ['name','gender']
+    REQUIRED_FIELDS = ['name','nickname','gender']
 
     
     def has_perm(self, perm, obj=None): # True를 반환하여 권한이 있음을 알림
