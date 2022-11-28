@@ -16,12 +16,13 @@ http://localhost:8000/account/token/refresh/
 urlpatterns =[
     # 로그인 / 회원가입
     
-    path('signup/', views.UserCreate.as_view()), # 회원가입
+    path('signup/', views.UserCreateView.as_view(), name = 'sign-up'), # 회원가입
+    #path('auth/', views.AuthView.as_view(), name = 'auth'), # 로그인
 
-    # 토큰
-    path('token/', TokenObtainPairView.as_view()),
-    path('token/refresh/', TokenRefreshView.as_view()),
-    path('token/verify/',TokenVerifyView.as_view()),
+    # # 토큰
+    # path('token/', TokenObtainPairView.as_view()),
+    # path('token/refresh/', TokenRefreshView.as_view()),
+    # path('token/verify/',TokenVerifyView.as_view()),
     
     # 로그인 화면 기능
     path('api-auth/', include('rest_framework.urls')),

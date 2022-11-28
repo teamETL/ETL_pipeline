@@ -1,12 +1,12 @@
 from .models import User
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
-from django.contrib.auth import get_user_model
+from django.contrib.auth.models import update_last_login
 
 
 
 
-# 로그인 관련 시리얼라이져
+# 회원가입 시리얼라이져
 class SignupSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
         required = True,
@@ -43,14 +43,45 @@ class SignupSerializer(serializers.ModelSerializer):
         user.save()
     
         return user
-
-class UserSerializer(serializers.ModelSerializer):
+# 로그인 시리얼라이져 
+class LogInSerializer(serializers.Serializer):
+    email = serializers.EmailField(required = True, max_length=64, write_only=True ),
+    password = serializers.CharField(required=True, style={'input_type': 'password'} )
     
-        email = serializers.CharField(required=True, max_length=100, write_only=True,)
-        password = serializers.CharField(required=True, write_only=True, style={'input_type': 'password'})
+    class Meta:
+        model = User
+        fields = ('email', 'password')
+        
+    def validate(self, data):
+        email = data.get('email',None)
+        password = data.get('password',None)
+
+        if User.objects.filter(email=email).exists():
+            user = User.objects.get(email=email)
+
+            if not user.check_password(password):
+                raise serializers.ValidationError('이메일과 비밀번호가 일치하지 않습니다.')
+        
+        else:
+            raise serializers.ValidationError("존재하지 않는 이메일입니다. 해당 이메일이 맞는지 확인해주세요.")
+        
+
+        token = RefreshToken.for_user(user=user)
+        data = {
+            'email' : user.email,
+            'refresh_token' : str(token),
+            'access_token' : str(token.access_token)
+        }
+        update_last_login(None, user)
+
+        return data
+# class UserSerializer(serializers.ModelSerializer):
+    
+#         email = serializers.CharField(required=True, max_length=100, write_only=True,)
+#         password = serializers.CharField(required=True, write_only=True, style={'input_type': 'password'})
                 
-        class Meta:
-            model = get_user_model()
-            fields = ('email', 'nickname','gender', 'password', 'name' )
+#         class Meta:
+#             model = get_user_model()
+#             fields = ('email', 'nickname','gender', 'password', 'name' )
 
     

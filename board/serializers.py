@@ -5,4 +5,4 @@ class BlogSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source = 'user.email')
     class Meta:
         model = Blog
-        fields = ('title','created_at','updated_at','user','body')
+        fields = ('id','title','created_at','updated_at','user','body')

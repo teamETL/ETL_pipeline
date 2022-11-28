@@ -105,7 +105,7 @@ ROOT_URLCONF = 'myproject.urls'
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',  # 인증된 요청인지 확인
-        'rest_framework.permissions.IsAdminUser',  # 관리자만 접근 가능
+        #'rest_framework.permissions.IsAdminUser',  # 관리자만 접근 가능
         'rest_framework.permissions.AllowAny',  # 누구나 접근 가능
         
         
@@ -115,6 +115,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ]
 }
 
@@ -145,7 +146,7 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': False,
     'UPDATE_LAST_LOGIN': False,
 
-    'ALGORITHM': 'HS256',
+    'ALGORITHM': ALGORITHM,
     'SIGNING_KEY': SECRET_KEY,
     'VERIFYING_KEY': None,
     'AUDIENCE': None,
