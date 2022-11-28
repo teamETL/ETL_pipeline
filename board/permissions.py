@@ -11,11 +11,9 @@ Permission의 종류
 # 안전한 Methods 정의 : 수정, 삽입, 삭제 를 하지않아서 안전하다고 부른다.
 SAFE_METHODS =('GET','HEAD','OPTIONS')
 
-class IsUserOrReadonly(permissions.BasePermission):
+class IsOwnerOrReadOnly(permissions.BasePermission):
 
-    def has_permission(self, request, view):
-        return request.user.is_authenticated
-
+    
     def has_object_permission(self, request, view, obj):
         
         # 조회 요청은 항상 누구나 볼수 있게 True
