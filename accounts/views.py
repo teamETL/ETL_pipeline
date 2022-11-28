@@ -21,6 +21,7 @@ from django.shortcuts import render, get_object_or_404
 from myproject.settings import SECRET_KEY, ALGORITHM
 
 
+
 # 로그인은 Django REST Framework에서 제공되는 URL 이용
 
 # 회원가입 커스터마이징

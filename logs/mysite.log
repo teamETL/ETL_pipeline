@@ -110,3 +110,14 @@ rest_framework_simplejwt.exceptions.TokenBackendError: Unrecognized algorithm ty
 2022-11-28 21:41:42,110 [ERROR] django.request: [35m--[0m
 2022-11-28 21:41:42,122 [ERROR] django.request: [35m[0m
 2022-11-28 21:41:42,132 [INFO] django.request: [35mPOST /user/signup/ - 500[0m
+2022-11-28 22:29:02,910 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2022-11-28 22:29:07,023 [WARNING] django.request: Bad Request: /user/signup/
+2022-11-28 22:29:08,702 [WARNING] django.request: Bad Request: /user/signup/
+2022-11-28 22:29:09,451 [WARNING] django.request: Bad Request: /user/signup/
+2022-11-28 22:29:10,179 [WARNING] django.request: Bad Request: /user/signup/
+2022-11-28 22:29:23,166 [WARNING] django.request: Bad Request: /user/signup/
+2022-11-28 22:29:24,134 [WARNING] django.request: Bad Request: /user/signup/
+2022-11-28 22:29:25,248 [WARNING] django.request: Bad Request: /user/signup/
+2022-11-28 22:29:25,951 [WARNING] django.request: Bad Request: /user/signup/
+2022-11-28 22:29:34,518 [WARNING] django.request: Method Not Allowed: /user/signup/
+2022-11-28 22:29:36,260 [WARNING] django.request: Bad Request: /user/signup/

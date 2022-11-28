@@ -3,7 +3,8 @@ from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import update_last_login
 
-
+import logging
+logger = logging.getLogger('my')
 
 
 # 회원가입 시리얼라이져
@@ -41,7 +42,7 @@ class SignupSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.refreshtoken = token
         user.save()
-    
+
         return user
 # 로그인 시리얼라이져 
 class LogInSerializer(serializers.Serializer):
