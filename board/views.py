@@ -4,6 +4,13 @@ from rest_framework import viewsets
 from .permissions import *
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
+
+from django.shortcuts import render
+
+import logging
+logger = logging.getLogger('my')
+
+
 # Blog의 목록, detail 보여주기, 수정하기, 삭제하기 모두 가능
 class BlogViewSet(viewsets.ModelViewSet):
     queryset = Blog.objects.all()
