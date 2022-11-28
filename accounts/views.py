@@ -30,6 +30,18 @@ class UserCreateView(generics.CreateAPIView):
     authentication_classes=[JWTAuthentication]
     permission_classes =[AllowAny]
 
+#OR query 관련 코드
+from django.db import connection
+
+def user_list(request):
+    posts = User.objects.filter(name__startswith='zen') | User.objects.filter(name__startswith='Pet')
+
+    print(posts)
+    print(connection.queries)
+
+    return render(request, 'output.html',{'posts':posts})
+
+
 # class AuthView(APIView):
 #     permission_classes =[AllowAny]
 #     # 유저 정보 확인

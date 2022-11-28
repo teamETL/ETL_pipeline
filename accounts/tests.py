@@ -34,7 +34,7 @@ class ProfileViewSetTestCase(APITestCase):  #수정중
     jwt_refresh_token = resp_json["refresh_token"]
 
     def setup(self):
-        self.user = User.objects.create_user(username="davinci", password="some-very-strong-psw") #이게 작동하는게 맞나...??
+        self.user = User.objects.create_user(username="davinci", password="some-very-strong-psw") 
         # self.token = Token.objects.create(user=self.user)
         self.api_authentication()
     
