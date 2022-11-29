@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from accounts.models import User
 from django.utils import timezone
+from django.core.validators import MinValueValidator
 
 class Blog(models.Model):
 
@@ -22,6 +23,9 @@ class Blog(models.Model):
 
     # 6. 본문
     body = models.TextField()
+
+    # 7. 조회수 ( validator를 활용하여 최소값을 0으로 지정 )
+    views = models.IntegerField(validators=[MinValueValidator(0)], default=0)
 
 
     class Meta:

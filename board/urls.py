@@ -12,11 +12,12 @@
 
 from django.urls import path, include
 from . import views
-from rest_framework.routers import DefaultRouter
+# from rest_framework.routers import DefaultRouter
 
-router = DefaultRouter()
-router.register(r'blog', views.BlogViewSet)
+# router = DefaultRouter()
+# router.register(r'blog', views.BlogViewSet)
 
 urlpatterns =[
-    path('', include(router.urls))
+    path('', views.BlogView.as_view()),
+    path('<int:pk>', views.BlogDetailView.as_view())
 ]
