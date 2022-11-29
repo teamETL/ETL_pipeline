@@ -31,18 +31,15 @@ class UserCreateView(generics.CreateAPIView):
     authentication_classes=[JWTAuthentication]
     permission_classes =[AllowAny]
 
-#OR query 관련 코드 - templates/output.html 참조
-from django.db import connection
-from django.db.models import Q
-
-def user_list(request):
-    posts = User.objects.filter(name__startswith='zen') | User.objects.filter(name__startswith='Pet')
-    posts = User.objects.filter(Q(name__startswith='zen') | ~Q (name__startswith='Pet'))
-
-    print(posts)
-    print(connection.queries)
-
-    return render(request, 'output.html',{'posts':posts})
+#aggregation 관련 코드
+class UserGenderStatisticsView(APIView):
+    """
+    유저의 남녀 수를 확인합니다.
+    """
+    def get(self, request):
+        male_cnt = User.objects.filter(gender="M").count()
+        female_cnt = User.objects.filter(gender="F").count()
+        return Response({"male_count": male_cnt, "female_count": female_cnt}, status=status.HTTP_200_OK)
 
 
 # class AuthView(APIView):

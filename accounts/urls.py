@@ -27,6 +27,6 @@ urlpatterns =[
     # 로그인 화면 기능
     path('api-auth/', include('rest_framework.urls')),
 
-    #OR query 관련 - user_list view 생성
-    path('userlist/', views.user_list, name='user_data'),
+    #aggregation 관련 코드
+    path('gender-stats/', views.UserGenderStatisticsView.as_view(), name='gender-stats'),
  ]
