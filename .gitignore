@@ -4,3 +4,4 @@
 logs
 migrations
 __pycahe__
+.vscode/settings.json
