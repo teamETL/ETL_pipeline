@@ -36,6 +36,7 @@ class UserGenderStatisticsView(APIView):
     """
     유저의 남녀 수를 확인합니다.
     """
+    permission_classes = [AllowAny]
     def get(self, request):
         male_cnt = User.objects.filter(gender="M").count()
         female_cnt = User.objects.filter(gender="F").count()
