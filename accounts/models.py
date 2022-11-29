@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-
+import datetime
 class UserManager(BaseUserManager):
     # 일반 user 생성
     def create_user(self, email, gender, name, password=None):
@@ -41,6 +41,7 @@ class User(AbstractBaseUser):
     id = models.AutoField(primary_key=True)
     email = models.EmailField(default='', max_length=100, null=False, blank=False, unique=True)
     gender = models.CharField(default='', max_length=6, choices=GENDER_CHOICES, null=False, blank=False)
+    birth_date =models.DateField(default=datetime.date.today, null=False, blank=False)
     nickname = models.CharField(default='', max_length=100, null=False, blank=False, unique=True)
     name = models.CharField(default='', max_length=100, null=False, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)

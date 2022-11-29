@@ -121,3 +121,192 @@ rest_framework_simplejwt.exceptions.TokenBackendError: Unrecognized algorithm ty
 2022-11-28 22:29:25,951 [WARNING] django.request: Bad Request: /user/signup/
 2022-11-28 22:29:34,518 [WARNING] django.request: Method Not Allowed: /user/signup/
 2022-11-28 22:29:36,260 [WARNING] django.request: Bad Request: /user/signup/
+2022-11-29 10:07:36,922 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2022-11-29 10:07:39,494 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap.min.css
+2022-11-29 10:07:39,507 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap-tweaks.css
+2022-11-29 10:07:39,509 [WARNING] django.request: Not Found: /static/rest_framework/css/prettify.css
+2022-11-29 10:07:39,513 [WARNING] django.request: Not Found: /static/rest_framework/css/default.css
+2022-11-29 10:07:39,515 [WARNING] django.request: Not Found: /static/rest_framework/js/jquery-3.5.1.min.js
+2022-11-29 10:07:39,521 [WARNING] django.request: Not Found: /static/rest_framework/js/bootstrap.min.js
+2022-11-29 10:07:39,524 [WARNING] django.request: Not Found: /static/rest_framework/js/ajax-form.js
+2022-11-29 10:07:39,527 [WARNING] django.request: Not Found: /static/rest_framework/js/csrf.js
+2022-11-29 10:07:39,530 [WARNING] django.request: Not Found: /static/rest_framework/js/prettify-min.js
+2022-11-29 10:07:39,535 [WARNING] django.request: Not Found: /static/rest_framework/js/default.js
+2022-11-29 10:37:21,302 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2022-11-29 10:37:22,855 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap.min.css
+2022-11-29 10:37:22,865 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap-tweaks.css
+2022-11-29 10:37:22,867 [WARNING] django.request: Not Found: /static/rest_framework/css/prettify.css
+2022-11-29 10:37:22,872 [WARNING] django.request: Not Found: /static/rest_framework/css/default.css
+2022-11-29 10:37:22,874 [WARNING] django.request: Not Found: /static/rest_framework/js/jquery-3.5.1.min.js
+2022-11-29 10:37:22,878 [WARNING] django.request: Not Found: /static/rest_framework/js/ajax-form.js
+2022-11-29 10:37:22,883 [WARNING] django.request: Not Found: /static/rest_framework/js/bootstrap.min.js
+2022-11-29 10:37:22,886 [WARNING] django.request: Not Found: /static/rest_framework/js/csrf.js
+2022-11-29 10:37:22,889 [WARNING] django.request: Not Found: /static/rest_framework/js/prettify-min.js
+2022-11-29 10:37:22,893 [WARNING] django.request: Not Found: /static/rest_framework/js/default.js
+2022-11-29 10:37:24,978 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap.min.css
+2022-11-29 10:37:24,980 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap-tweaks.css
+2022-11-29 10:37:24,981 [WARNING] django.request: Not Found: /static/rest_framework/css/prettify.css
+2022-11-29 10:37:24,982 [WARNING] django.request: Not Found: /static/rest_framework/css/default.css
+2022-11-29 10:37:24,983 [WARNING] django.request: Not Found: /static/rest_framework/js/jquery-3.5.1.min.js
+2022-11-29 10:37:24,985 [WARNING] django.request: Not Found: /static/rest_framework/js/ajax-form.js
+2022-11-29 10:37:24,989 [WARNING] django.request: Not Found: /static/rest_framework/js/csrf.js
+2022-11-29 10:37:24,992 [WARNING] django.request: Not Found: /static/rest_framework/js/bootstrap.min.js
+2022-11-29 10:37:24,995 [WARNING] django.request: Not Found: /static/rest_framework/js/prettify-min.js
+2022-11-29 10:37:24,996 [WARNING] django.request: Not Found: /static/rest_framework/js/default.js
+2022-11-29 10:37:27,910 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap.min.css
+2022-11-29 10:37:27,911 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap-tweaks.css
+2022-11-29 10:37:27,912 [WARNING] django.request: Not Found: /static/rest_framework/css/prettify.css
+2022-11-29 10:37:27,914 [WARNING] django.request: Not Found: /static/rest_framework/css/default.css
+2022-11-29 10:37:27,916 [WARNING] django.request: Not Found: /static/rest_framework/js/jquery-3.5.1.min.js
+2022-11-29 10:37:27,917 [WARNING] django.request: Not Found: /static/rest_framework/js/ajax-form.js
+2022-11-29 10:37:27,921 [WARNING] django.request: Not Found: /static/rest_framework/js/csrf.js
+2022-11-29 10:37:27,922 [WARNING] django.request: Not Found: /static/rest_framework/js/bootstrap.min.js
+2022-11-29 10:37:27,927 [WARNING] django.request: Not Found: /static/rest_framework/js/prettify-min.js
+2022-11-29 10:37:27,929 [WARNING] django.request: Not Found: /static/rest_framework/js/default.js
+2022-11-29 10:38:56,372 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2022-11-29 10:39:24,201 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2022-11-29 10:39:26,103 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap.min.css
+2022-11-29 10:39:26,116 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap-tweaks.css
+2022-11-29 10:39:26,118 [WARNING] django.request: Not Found: /static/rest_framework/css/prettify.css
+2022-11-29 10:39:26,123 [WARNING] django.request: Not Found: /static/rest_framework/css/default.css
+2022-11-29 10:39:26,126 [WARNING] django.request: Not Found: /static/rest_framework/js/jquery-3.5.1.min.js
+2022-11-29 10:39:26,131 [WARNING] django.request: Not Found: /static/rest_framework/js/bootstrap.min.js
+2022-11-29 10:39:26,133 [WARNING] django.request: Not Found: /static/rest_framework/js/ajax-form.js
+2022-11-29 10:39:26,139 [WARNING] django.request: Not Found: /static/rest_framework/js/prettify-min.js
+2022-11-29 10:39:26,143 [WARNING] django.request: Not Found: /static/rest_framework/js/csrf.js
+2022-11-29 10:39:26,145 [WARNING] django.request: Not Found: /static/rest_framework/js/default.js
+2022-11-29 10:43:15,117 [INFO] django.utils.autoreload: C:\Users\mgd81\github\ETL_pipeline\myproject\settings.py changed, reloading.
+2022-11-29 10:43:16,255 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2022-11-29 10:43:18,196 [INFO] django.utils.autoreload: C:\Users\mgd81\github\ETL_pipeline\myproject\settings.py changed, reloading.
+2022-11-29 10:43:19,341 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2022-11-29 10:43:21,174 [ERROR] django.request: Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\mgd81\anaconda3\envs\djang-cp2\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\mgd81\anaconda3\envs\djang-cp2\lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+  File "C:\Users\mgd81\anaconda3\envs\djang-cp2\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "C:\Users\mgd81\anaconda3\envs\djang-cp2\lib\site-packages\rest_framework\response.py", line 70, in rendered_content
+    ret = renderer.render(self.data, accepted_media_type, context)
+  File "C:\Users\mgd81\anaconda3\envs\djang-cp2\lib\site-packages\rest_framework\renderers.py", line 722, in render
+    template = loader.get_template(self.template)
+  File "C:\Users\mgd81\anaconda3\envs\djang-cp2\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: rest_framework/api.html
+2022-11-29 10:43:25,463 [INFO] django.utils.autoreload: C:\Users\mgd81\github\ETL_pipeline\myproject\settings.py changed, reloading.
+2022-11-29 10:43:26,660 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2022-11-29 10:43:27,267 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap.min.css
+2022-11-29 10:43:27,274 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap-tweaks.css
+2022-11-29 10:43:27,276 [WARNING] django.request: Not Found: /static/rest_framework/css/prettify.css
+2022-11-29 10:43:27,278 [WARNING] django.request: Not Found: /static/rest_framework/css/default.css
+2022-11-29 10:43:27,280 [WARNING] django.request: Not Found: /static/rest_framework/js/ajax-form.js
+2022-11-29 10:43:27,285 [WARNING] django.request: Not Found: /static/rest_framework/js/jquery-3.5.1.min.js
+2022-11-29 10:43:27,287 [WARNING] django.request: Not Found: /static/rest_framework/js/bootstrap.min.js
+2022-11-29 10:43:27,288 [WARNING] django.request: Not Found: /static/rest_framework/js/csrf.js
+2022-11-29 10:43:27,291 [WARNING] django.request: Not Found: /static/rest_framework/js/prettify-min.js
+2022-11-29 10:43:27,294 [WARNING] django.request: Not Found: /static/rest_framework/js/default.js
+2022-11-29 10:45:59,601 [INFO] django.utils.autoreload: C:\Users\mgd81\github\ETL_pipeline\myproject\settings.py changed, reloading.
+2022-11-29 10:46:00,914 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2022-11-29 10:46:05,914 [INFO] django.utils.autoreload: C:\Users\mgd81\github\ETL_pipeline\myproject\settings.py changed, reloading.
+2022-11-29 10:46:07,208 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2022-11-29 10:46:12,174 [INFO] django.utils.autoreload: C:\Users\mgd81\github\ETL_pipeline\myproject\settings.py changed, reloading.
+2022-11-29 10:46:29,120 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2022-11-29 10:49:33,912 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2022-11-29 10:49:35,728 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap.min.css
+2022-11-29 10:49:35,731 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap-tweaks.css
+2022-11-29 10:49:35,733 [WARNING] django.request: Not Found: /static/rest_framework/css/prettify.css
+2022-11-29 10:49:35,739 [WARNING] django.request: Not Found: /static/rest_framework/css/default.css
+2022-11-29 10:49:35,742 [WARNING] django.request: Not Found: /static/rest_framework/js/jquery-3.5.1.min.js
+2022-11-29 10:49:35,747 [WARNING] django.request: Not Found: /static/rest_framework/js/ajax-form.js
+2022-11-29 10:49:35,751 [WARNING] django.request: Not Found: /static/rest_framework/js/bootstrap.min.js
+2022-11-29 10:49:35,754 [WARNING] django.request: Not Found: /static/rest_framework/js/csrf.js
+2022-11-29 10:49:35,756 [WARNING] django.request: Not Found: /static/rest_framework/js/prettify-min.js
+2022-11-29 10:49:35,760 [WARNING] django.request: Not Found: /static/rest_framework/js/default.js
+2022-11-29 10:49:41,603 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap.min.css
+2022-11-29 10:49:41,606 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap-tweaks.css
+2022-11-29 10:49:41,607 [WARNING] django.request: Not Found: /static/rest_framework/css/prettify.css
+2022-11-29 10:49:41,608 [WARNING] django.request: Not Found: /static/rest_framework/css/default.css
+2022-11-29 10:49:41,609 [WARNING] django.request: Not Found: /static/rest_framework/js/jquery-3.5.1.min.js
+2022-11-29 10:49:41,611 [WARNING] django.request: Not Found: /static/rest_framework/js/ajax-form.js
+2022-11-29 10:49:41,614 [WARNING] django.request: Not Found: /static/rest_framework/js/csrf.js
+2022-11-29 10:49:41,615 [WARNING] django.request: Not Found: /static/rest_framework/js/bootstrap.min.js
+2022-11-29 10:49:41,619 [WARNING] django.request: Not Found: /static/rest_framework/js/prettify-min.js
+2022-11-29 10:49:41,620 [WARNING] django.request: Not Found: /static/rest_framework/js/default.js
+2022-11-29 10:49:42,485 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap.min.css
+2022-11-29 10:49:42,490 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap-tweaks.css
+2022-11-29 10:49:42,492 [WARNING] django.request: Not Found: /static/rest_framework/css/prettify.css
+2022-11-29 10:49:42,495 [WARNING] django.request: Not Found: /static/rest_framework/css/default.css
+2022-11-29 10:49:42,497 [WARNING] django.request: Not Found: /static/rest_framework/js/jquery-3.5.1.min.js
+2022-11-29 10:49:42,498 [WARNING] django.request: Not Found: /static/rest_framework/js/ajax-form.js
+2022-11-29 10:49:42,501 [WARNING] django.request: Not Found: /static/rest_framework/js/csrf.js
+2022-11-29 10:49:42,505 [WARNING] django.request: Not Found: /static/rest_framework/js/bootstrap.min.js
+2022-11-29 10:49:42,508 [WARNING] django.request: Not Found: /static/rest_framework/js/prettify-min.js
+2022-11-29 10:49:42,514 [WARNING] django.request: Not Found: /static/rest_framework/js/default.js
+2022-11-29 10:50:06,112 [WARNING] django.request: Unauthorized: /
+2022-11-29 10:50:06,135 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap.min.css
+2022-11-29 10:50:06,145 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap-tweaks.css
+2022-11-29 10:50:06,147 [WARNING] django.request: Not Found: /static/rest_framework/css/prettify.css
+2022-11-29 10:50:06,149 [WARNING] django.request: Not Found: /static/rest_framework/css/default.css
+2022-11-29 10:50:06,149 [WARNING] django.request: Not Found: /static/rest_framework/js/jquery-3.5.1.min.js
+2022-11-29 10:50:06,152 [WARNING] django.request: Not Found: /static/rest_framework/js/ajax-form.js
+2022-11-29 10:50:06,152 [WARNING] django.request: Not Found: /static/rest_framework/js/csrf.js
+2022-11-29 10:50:06,157 [WARNING] django.request: Not Found: /static/rest_framework/js/bootstrap.min.js
+2022-11-29 10:50:06,159 [WARNING] django.request: Not Found: /static/rest_framework/js/prettify-min.js
+2022-11-29 10:50:06,165 [WARNING] django.request: Not Found: /static/rest_framework/js/default.js
+2022-11-29 10:50:06,981 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap.min.css
+2022-11-29 10:50:06,986 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap-tweaks.css
+2022-11-29 10:50:06,988 [WARNING] django.request: Not Found: /static/rest_framework/css/prettify.css
+2022-11-29 10:50:06,991 [WARNING] django.request: Not Found: /static/rest_framework/css/default.css
+2022-11-29 10:50:22,038 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap.min.css
+2022-11-29 10:50:22,045 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap-tweaks.css
+2022-11-29 10:50:22,046 [WARNING] django.request: Not Found: /static/rest_framework/css/prettify.css
+2022-11-29 10:50:22,048 [WARNING] django.request: Not Found: /static/rest_framework/css/default.css
+2022-11-29 10:50:22,049 [WARNING] django.request: Not Found: /static/rest_framework/js/jquery-3.5.1.min.js
+2022-11-29 10:50:22,051 [WARNING] django.request: Not Found: /static/rest_framework/js/ajax-form.js
+2022-11-29 10:50:22,052 [WARNING] django.request: Not Found: /static/rest_framework/js/csrf.js
+2022-11-29 10:50:22,057 [WARNING] django.request: Not Found: /static/rest_framework/js/bootstrap.min.js
+2022-11-29 10:50:22,060 [WARNING] django.request: Not Found: /static/rest_framework/js/prettify-min.js
+2022-11-29 10:50:22,067 [WARNING] django.request: Not Found: /static/rest_framework/js/default.js
+2022-11-29 10:50:30,288 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap.min.css
+2022-11-29 10:50:30,293 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap-tweaks.css
+2022-11-29 10:50:30,295 [WARNING] django.request: Not Found: /static/rest_framework/css/prettify.css
+2022-11-29 10:50:30,296 [WARNING] django.request: Not Found: /static/rest_framework/css/default.css
+2022-11-29 10:50:30,297 [WARNING] django.request: Not Found: /static/rest_framework/js/jquery-3.5.1.min.js
+2022-11-29 10:50:30,300 [WARNING] django.request: Not Found: /static/rest_framework/js/ajax-form.js
+2022-11-29 10:50:30,301 [WARNING] django.request: Not Found: /static/rest_framework/js/csrf.js
+2022-11-29 10:50:30,305 [WARNING] django.request: Not Found: /static/rest_framework/js/bootstrap.min.js
+2022-11-29 10:50:30,307 [WARNING] django.request: Not Found: /static/rest_framework/js/prettify-min.js
+2022-11-29 10:50:30,311 [WARNING] django.request: Not Found: /static/rest_framework/js/default.js
+2022-11-29 10:50:34,753 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap.min.css
+2022-11-29 10:50:34,756 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap-tweaks.css
+2022-11-29 10:50:34,757 [WARNING] django.request: Not Found: /static/rest_framework/css/prettify.css
+2022-11-29 10:50:34,761 [WARNING] django.request: Not Found: /static/rest_framework/js/csrf.js
+2022-11-29 10:50:34,762 [WARNING] django.request: Not Found: /static/rest_framework/js/jquery-3.5.1.min.js
+2022-11-29 10:50:34,763 [WARNING] django.request: Not Found: /static/rest_framework/js/ajax-form.js
+2022-11-29 10:50:34,764 [WARNING] django.request: Not Found: /static/rest_framework/css/default.css
+2022-11-29 10:50:34,768 [WARNING] django.request: Not Found: /static/rest_framework/js/bootstrap.min.js
+2022-11-29 10:50:34,770 [WARNING] django.request: Not Found: /static/rest_framework/js/prettify-min.js
+2022-11-29 10:50:34,774 [WARNING] django.request: Not Found: /static/rest_framework/js/default.js
+2022-11-29 10:52:25,885 [INFO] django.utils.autoreload: C:\Users\mgd81\github\ETL_pipeline\myproject\settings.py changed, reloading.
+2022-11-29 10:52:27,392 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2022-11-29 10:52:28,079 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap.min.css
+2022-11-29 10:52:28,090 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap-tweaks.css
+2022-11-29 10:52:28,093 [WARNING] django.request: Not Found: /static/rest_framework/css/prettify.css
+2022-11-29 10:52:28,095 [WARNING] django.request: Not Found: /static/rest_framework/css/default.css
+2022-11-29 10:52:28,100 [WARNING] django.request: Not Found: /static/rest_framework/js/jquery-3.5.1.min.js
+2022-11-29 10:52:28,106 [WARNING] django.request: Not Found: /static/rest_framework/js/ajax-form.js
+2022-11-29 10:52:28,110 [WARNING] django.request: Not Found: /static/rest_framework/js/csrf.js
+2022-11-29 10:52:28,115 [WARNING] django.request: Not Found: /static/rest_framework/js/bootstrap.min.js
+2022-11-29 10:52:28,120 [WARNING] django.request: Not Found: /static/rest_framework/js/prettify-min.js
+2022-11-29 10:52:28,126 [WARNING] django.request: Not Found: /static/rest_framework/js/default.js
+2022-11-29 10:55:29,107 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap.min.css
+2022-11-29 10:55:29,115 [WARNING] django.request: Not Found: /static/rest_framework/css/bootstrap-tweaks.css
+2022-11-29 10:55:29,117 [WARNING] django.request: Not Found: /static/rest_framework/css/prettify.css
+2022-11-29 10:55:29,118 [WARNING] django.request: Not Found: /static/rest_framework/css/default.css
+2022-11-29 10:55:29,119 [WARNING] django.request: Not Found: /static/rest_framework/js/jquery-3.5.1.min.js
+2022-11-29 10:55:29,121 [WARNING] django.request: Not Found: /static/rest_framework/js/ajax-form.js
+2022-11-29 10:55:29,124 [WARNING] django.request: Not Found: /static/rest_framework/js/csrf.js
+2022-11-29 10:55:29,126 [WARNING] django.request: Not Found: /static/rest_framework/js/bootstrap.min.js
+2022-11-29 10:55:29,131 [WARNING] django.request: Not Found: /static/rest_framework/js/prettify-min.js
+2022-11-29 10:55:29,133 [WARNING] django.request: Not Found: /static/rest_framework/js/default.js

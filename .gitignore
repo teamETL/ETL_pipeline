@@ -1,3 +1,6 @@
 
 .env
+.logs
 logs
+migrations
+__pycahe__
