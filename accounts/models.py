@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 import datetime
 class UserManager(BaseUserManager):
     # 일반 user 생성
-    def create_user(self, email, gender, name, password=None):
+    def create_user(self, email, gender, name, nickname, password=None):
         if not email:
             raise ValueError('must have user email')
         if not gender:
@@ -13,6 +13,7 @@ class UserManager(BaseUserManager):
         user = self.model(
             email = self.normalize_email(email),
             gender = gender,
+            nickname = nickname,
             name = name,
         )
         user.set_password(password)
@@ -20,10 +21,11 @@ class UserManager(BaseUserManager):
         return user
 
     # 관리자 user 생성
-    def create_superuser(self, email, gender, name, password=None):
+    def create_superuser(self, email, gender, name,nickname, password=None):
         user = self.create_user(
             email,
             password = password,
+            nickname = nickname,
             gender = gender,
             name = name
         )
