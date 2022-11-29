@@ -21,7 +21,7 @@ class SignupSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = ('email','nickname','gender','password','password2','name')
+        fields = ('email','nickname','gender','password','password2','name','birth_date')
     
     def validate(self, data):
         if data['password'] != data['password2']:
@@ -36,7 +36,8 @@ class SignupSerializer(serializers.ModelSerializer):
             nickname = validated_data['nickname'],
             email = validated_data['email'],
             name = validated_data['name'],
-            gender = validated_data['gender']
+            gender = validated_data['gender'],
+            birth_date = validated_data['birth_date']
         )
         token = RefreshToken.for_user(user)
         user.set_password(validated_data['password'])
