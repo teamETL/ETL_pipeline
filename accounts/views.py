@@ -31,11 +31,13 @@ class UserCreateView(generics.CreateAPIView):
     authentication_classes=[JWTAuthentication]
     permission_classes =[AllowAny]
 
-#OR query 관련 코드
+#OR query 관련 코드 - templates/output.html 참조
 from django.db import connection
+from django.db.models import Q
 
 def user_list(request):
     posts = User.objects.filter(name__startswith='zen') | User.objects.filter(name__startswith='Pet')
+    posts = User.objects.filter(Q(name__startswith='zen') | ~Q (name__startswith='Pet'))
 
     print(posts)
     print(connection.queries)
