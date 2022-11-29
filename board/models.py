@@ -29,4 +29,5 @@ class Blog(models.Model):
 
 
     class Meta:
+        ordering =['-id'] # 역순으로 정렬 즉, 최신글부터 상단에 노출
         db_table = 'text' # 테이블명을 text 로 설정

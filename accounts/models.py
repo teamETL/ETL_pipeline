@@ -71,4 +71,5 @@ class User(AbstractBaseUser):
         return self.is_admin
     
     class Meta:
+        ordering =['id'] # 오름차순 정렬
         db_table = 'userinfo' # 테이블명을 userinfo로 설정

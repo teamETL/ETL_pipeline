@@ -74,8 +74,11 @@ INSTALLED_APPS = [
     'board',
     'accounts',
 
-    # JWT
+
+    # filters
+    'django_filters',
     
+    # JWT
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     
@@ -171,10 +174,11 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',  # 인증된 요청인지 확인
         #'rest_framework.permissions.IsAdminUser',  # 관리자만 접근 가능
-        'rest_framework.permissions.AllowAny',  # 누구나 접근 가능
-        
-        
+        'rest_framework.permissions.AllowAny',  # 누구나 접근 가능        
     ),
+    # 필터링 기능 추가
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+
     # JWT를 통한 인증 방식 사용
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',

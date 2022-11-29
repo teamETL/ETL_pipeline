@@ -12,6 +12,7 @@
 
 from django.urls import path, include
 from . import views
+from rest_framework.urlpatterns import format_suffix_patterns
 # from rest_framework.routers import DefaultRouter
 
 # router = DefaultRouter()
@@ -19,5 +20,8 @@ from . import views
 
 urlpatterns =[
     path('', views.BlogView.as_view()),
-    path('<int:pk>', views.BlogDetailView.as_view())
+    path('<int:pk>/', views.BlogDetailView.as_view()),
+    path('statistic/', views.BlogStatisticsView.as_view())
 ]
+
+urlpatterns = format_suffix_patterns(urlpatterns)
