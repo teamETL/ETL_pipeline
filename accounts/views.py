@@ -31,6 +31,17 @@ class UserCreateView(generics.CreateAPIView):
     authentication_classes=[JWTAuthentication]
     permission_classes =[AllowAny]
 
+#aggregation 관련 코드
+class UserGenderStatisticsView(APIView):
+    """
+    유저의 남녀 수를 확인합니다.
+    """
+    def get(self, request):
+        male_cnt = User.objects.filter(gender="M").count()
+        female_cnt = User.objects.filter(gender="F").count()
+        return Response({"male_count": male_cnt, "female_count": female_cnt}, status=status.HTTP_200_OK)
+
+
 # class AuthView(APIView):
 #     permission_classes =[AllowAny]
 #     # 유저 정보 확인
