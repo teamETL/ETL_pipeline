@@ -24,7 +24,7 @@ from django.db.models import F, Sum, Count, Case, When
 
 # 로그인은 Django REST Framework에서 제공되는 URL 이용
 import logging
-logger = logging.getLogger('board')
+# logger = logging.getLogger('user')
 # 회원가입 커스터마이징
 class UserCreateView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -39,7 +39,7 @@ class UserCreateView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
-        logger.info(serializer.data[0]['id'])
+        #logger.info(serializer.data[0]['id'])
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 #aggregation 관련 코드

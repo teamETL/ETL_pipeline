@@ -138,17 +138,33 @@ LOGGING = {
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
         },
-        'board': {
+        'board_request': {
             'level': 'INFO',
             'filters': ['require_debug_true'],
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': BASE_DIR / 'logs/board.log',
+            'filename': BASE_DIR / 'logs/board_request.log',
+
+            'maxBytes': 1024*1024*5,  # 5 MB
+            'backupCount': 5,
+            'formatter': 'standard',
+        },
+        'user': {
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': BASE_DIR / 'logs/user.log',
+
             'maxBytes': 1024*1024*5,  # 5 MB
             'backupCount': 5,
             'formatter': 'standard',
         },
     },
     'loggers': {
+        'django.request': {
+            'handlers': ['console','board_request'],
+            'level': 'INFO',  # change debug level as appropiate
+            'propagate': False,
+        },
         'django': {
             'handlers': ['console', 'mail_admins'],
             'level': 'INFO',
@@ -158,16 +174,11 @@ LOGGING = {
             'level': 'INFO',
             'propagate': False,
         },
-        'board' : {
-            'handlers': ['console', 'board'],
+        'user': {
+            'handlers': ['user'],
             'level': 'INFO',
-            'propagate' : False,
-        },
-        'user' : {
-            'handlers': ['console', 'board'],
-            'level': 'INFO',
-            'propagate' : False,
-        },
+            'propagate': False,
+        }, 
     }
 }
 MIDDLEWARE = [
@@ -178,6 +189,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'request_logging.middleware.LoggingMiddleware',
 ]
 
 ROOT_URLCONF = 'myproject.urls'
