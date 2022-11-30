@@ -98,11 +98,11 @@ class TestUser(APITestCase):
         #self.assertEqual(response.json(), {'username': "{'detail': 'No active account found with the given credentials'}"})
 
     # 회원탈퇴
-    # def test_withdraw_success(self):
-    #     self.withdraw_url = f"/api/users/{self.user.id}/withdraw/"
+    def test_withdraw_success(self):
+        self.withdraw_url = f"/api/users/{self.user.id}/withdraw/"
 
-    #     client = APIClient()
-    #     client.force_authenticate(user=self.user)
+        client = APIClient()
+        client.force_authenticate(user=self.user)
 
-    #     response = client.delete(self.withdraw_url, format='json')
-    #     self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        response = client.delete(self.withdraw_url, format='json')
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)

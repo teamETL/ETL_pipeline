@@ -1,6 +1,6 @@
 
 .env
-.logs
+.log
 logs
 migrations
-__pycahe__
+__pycache__
