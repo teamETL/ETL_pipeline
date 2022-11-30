@@ -21,6 +21,5 @@ class CustomJsonFormatter(jsonlogger.JsonFormatter):
             log_record['level'] = record.levelname
 
         log_record['environment'] = 'django'
-        if log_record.get('user'):
-            log_record['user'] = 'user_id' + log_record['level']
+
 

@@ -40,6 +40,16 @@ class BlogView(ListCreateAPIView):
         logger.info(request.user)
         return Response(serializer.data)
 
+    def create(self, request):
+        serializer = BlogSerializer(data=request.data) #Request의 data를 UserSerializer로 변환
+ 
+        if serializer.is_valid():
+            serializer.save() #UserSerializer의 유효성 검사를 한 뒤 DB에 저장
+            logger.info(request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED) #client에게 JSON response 전달
+        else:
+            logger.info(request.user)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class BlogDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Blog.objects.all()
@@ -51,11 +61,21 @@ class BlogDetailView(RetrieveUpdateDestroyAPIView):
         instance.views += 1  # 조회수 1 증가
         instance.save()
         serializer = self.get_serializer(instance)
+        logger.info(request.user)
+
+        return Response(serializer.data)
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.save()
+        serializer = self.get_serializer(instance)
+        logger.info(request.user)
+        
         return Response(serializer.data)
 
     def destory(self, request, *args, **kwargs):
         blog = self.get_object()
-        #logger.info(str(request))
+        logger.info(request.user)
         blog.delete()
 
         return Response({"message": "글이 삭제 되었습니다."})
@@ -66,7 +86,7 @@ class BlogStatisticsView(APIView):
     def get(self, request):
         male_cnt = Blog.objects.filter(user__gender="M").count()
         female_cnt = Blog.objects.filter(user__gender="F").count()
-
+        logger.info(request.user)
         return Response({"Male":male_cnt, "Female": female_cnt}, status=status.HTTP_200_OK)
 
     # def post(self, request):

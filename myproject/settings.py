@@ -121,6 +121,12 @@ LOGGING = {
         'standard': {
             '()' : CustomJsonFormatter,
         },
+        'test': {
+            'format' : '{"request" : "%(request)s","response" : "%(response)s"}'
+        },
+        'user_info' :{ 
+            'format' : '{"time" : "%(asctime)s", "level" : "%(levelname)s", "current_user" : "%(message)s"}',
+        },
     },
     'handlers': {
         'console': {
@@ -146,17 +152,17 @@ LOGGING = {
 
             'maxBytes': 1024*1024*5,  # 5 MB
             'backupCount': 5,
-            'formatter': 'standard',
+            'formatter': 'test',
         },
         'user': {
             'level': 'INFO',
             'filters': ['require_debug_true'],
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': BASE_DIR / 'logs/user.log',
+            'filename': BASE_DIR / 'logs/board_request.log',
 
             'maxBytes': 1024*1024*5,  # 5 MB
             'backupCount': 5,
-            'formatter': 'standard',
+            'formatter': 'user_info',
         },
     },
     'loggers': {
