@@ -11,7 +11,7 @@ from rest_framework.views import APIView
 import django_filters
 
 import logging
-logger = logging.getLogger('my')
+logger = logging.getLogger('user')
 
 # Viewset을 활용한 게시판 기능.
 # Blog의 목록, detail 보여주기, 수정하기, 삭제하기 모두 가능
@@ -36,6 +36,12 @@ class BlogView(ListCreateAPIView):
         # 현재 요청한 유저를 작성자로 설정
         serializer.save(user=self.request.user)
 
+    def list(self, request):
+        queryset = self.get_queryset()
+        serializer = BlogSerializer(queryset, many=True)
+        logger.info(request.user)
+        return Response(serializer.data)
+
 
 class BlogDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Blog.objects.all()
@@ -48,6 +54,13 @@ class BlogDetailView(RetrieveUpdateDestroyAPIView):
         instance.save()
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
+
+    def destory(self, request, *args, **kwargs):
+        blog = self.get_object()
+        #logger.info(str(request))
+        blog.delete()
+
+        return Response({"message": "글이 삭제 되었습니다."})
 
 class BlogStatisticsView(APIView):
 
