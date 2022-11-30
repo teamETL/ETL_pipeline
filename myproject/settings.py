@@ -163,6 +163,11 @@ LOGGING = {
             'level': 'INFO',
             'propagate' : False,
         },
+        'user' : {
+            'handlers': ['console', 'board'],
+            'level': 'INFO',
+            'propagate' : False,
+        },
     }
 }
 MIDDLEWARE = [
