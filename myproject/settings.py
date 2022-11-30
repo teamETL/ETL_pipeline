@@ -93,6 +93,13 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'dj_rest_auth.registration',
 ]
+
+# Json logging(formatter sysytem)
+
+
+from .logging_formatters  import CustomJsonFormatter
+
+
 # 로깅설정
 LOGGING = {
     'version': 1,
@@ -112,7 +119,7 @@ LOGGING = {
             'style': '{',
         },
         'standard': {
-            'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+            '()' : CustomJsonFormatter,
         },
     },
     'handlers': {
@@ -131,12 +138,11 @@ LOGGING = {
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
         },
-        'file': {
+        'board': {
             'level': 'INFO',
-            'encoding': 'utf-8',
-            'filters': ['require_debug_false'],
+            'filters': ['require_debug_true'],
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': BASE_DIR / 'logs/mysite.log',
+            'filename': BASE_DIR / 'logs/board.log',
             'maxBytes': 1024*1024*5,  # 5 MB
             'backupCount': 5,
             'formatter': 'standard',
@@ -144,7 +150,7 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers': ['console', 'mail_admins', 'file'],
+            'handlers': ['console', 'mail_admins'],
             'level': 'INFO',
         },
         'django.server': {
@@ -152,9 +158,10 @@ LOGGING = {
             'level': 'INFO',
             'propagate': False,
         },
-        'my': {
-            'handlers': ['console', 'file'],
+        'board' : {
+            'handlers': ['console', 'board'],
             'level': 'INFO',
+            'propagate' : False,
         },
     }
 }
