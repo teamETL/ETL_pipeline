@@ -1,67 +1,108 @@
 import json
 from django.urls import reverse
 from rest_framework.authtoken.models import Token
-from rest_framework.test import APITestCase
+from rest_framework.test import APIClient, APITestCase
 from rest_framework import status
 from .models import User 
-from .serializers import UserSerializer
+from .serializers import SignupSerializer, LogInSerializer
 import requests
 
-class RegistrationTestCase(APITestCase):
+class TestUser(APITestCase):
+    '''
+        users app의 API 3개(회원가입, 로그인, 회원탈퇴) unit test
+    '''
     def setUp(self):
-        self.url = "user/signup/"
+        self.user = User(
+            id       = 1,
+            email    = "aaa@gmail.com",
+            gender   = 'M',
+            birth_date = '2000-01-01',
+            nickname = "verynice",
+            name     = "aaa",
+            password = "pass_password",
+            is_active = True,
+            is_admin = False  # 일반유저          
+        )
+        self.user.save()
+        
+    # 회원가입
+    def test_register_success(self):
+        
+        self.user_data = {
+            "nickname"      : "verynice1",
+            "password"      : "111222333",
+            "password2"     : "111222333",
+            "name"          : "홍길동",
+            "email"         : "abc@gmail.com",
+            "gender"        : "F",
+            "birth_date"    : "1999-01-01",
+            }
 
-    def test_registration(self):
-        data = {"username": "testcase", "email": "test@localhost.app",
-        "password1": "some_strong_psw", "password2": "some_strong_psw"}
-        response = self.client.post(self.url, data=data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED) #if status code = 201, test success
+        self.register_url = "/user/signup/"
+        self.response = self.client.post(self.register_url, data = self.user_data, format='json')
+        self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
 
-class ProfileViewSetTestCase(APITestCase):  #수정중
-    
-    list_url = reverse("profile-list") #???
-    
-    API_ENDPOINT = "user/signup/"
-    # data to be sent to api
-    data = {'username': "davinci",
-        'email':'test2@localhost.app',
-        'password1':"very-strong-psw",
-        'password2':"-very-strong-psw"}
+    # 회원가입 중복아이디 체크 실패
+    def test_register_id_ckeck_fail(self):
+        
+        self.user_data = {
+            "nickname"      : "verynice1", 
+            "password"      : "111222333",
+            "password_check": "111222333",
+            "name"          : "홍길동",
+            "email"         : "abc@gmail.com", #중복이메일
+            "gender"        : "F",
+            "birth_date"    : "1999-01-02"
+            }
 
-    response = requests.post(url = API_ENDPOINT, data = data)
-    resp_json = response.json() #parsed into dict
-    jwt_access_token = resp_json["access_token"]
-    jwt_refresh_token = resp_json["refresh_token"]
+        self.register_url = "/user/signup/"
+        self.response = self.client.post(self.register_url, data = self.user_data, format='json')
+        self.assertEqual(self.response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def setup(self):
-        self.user = User.objects.create_user(username="davinci", password="some-very-strong-psw") 
-        # self.token = Token.objects.create(user=self.user)
-        self.api_authentication()
-    
-    # def api_authentication(self):
-    #     self.client.credentials(HTTP_AUTHORIZATION="Token "+self.token.key)
+    # 회원가입시 패스워드 확인 실패
+    def test_register_password_check_fail(self):
         
-    # def test_profile_list_authenticated(self):
-    #     response = self.client.get(self.list_url)
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-        
-    # def test_profile_list_un_authenticated(self):
-    #     self.client.force_authenticate(user=None)
-    #     response = self.client.get(self.list_url)
-    #     self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-        
-    # def test_profile_detail_retrieve(self):
-    #     response = self.client.get(reverse("profile-detail", kwargs={"pk":1}))
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-    #     self.assertEqual(response.data["user"], "davinci")
-        
-    # def test_profile_update_by_owner(self):
-    #     response = self.client.put(reverse("profile-detail", kwargs={"pk":1}), {"city": "Anchiano", "bio": "Renaissance Genius"})
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-    #     self.assertEqual(json.loads(response.content), {"id": 1, "user": "davinci", "bio": "Renaissance Genius", "city": "Anchiano", "avatar": None})
-        
-    # def test_profile_update_by_random_user(self):
-    #     random_user = User.objects.create_user(username="random", password="psw123123123")
-    #     self.client.force_authenticate(user=random_user)
-    #     response = self.client.put(reverse("profile-detail", kwargs={"pk":1}), {"bio": "hacked!!"})
-    #     self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.user_data = {
+            "nickname"      : "verynice2", 
+            "password"      : "111222333",
+            "password_check": "111111111", #패스워드 확인 오류
+            "name"          : "홍길동",
+            "email"         : "abcd@gmail.com",
+            "gender"        : "F",
+            "birth_date"    : "1999-01-02"
+            }
+
+        self.register_url = "/user/signup/"
+        self.response = self.client.post(self.register_url, data = self.user_data, format='json')
+        self.assertEqual(self.response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    # 로그인
+    def test_login_success(self):
+        self.login_url = "/user/api-auth/login/"
+        data= {
+                "email": "aaa@gmail.com",
+                "password": "pass_password",
+            }
+        response= self.client.post(self.login_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    # 비밀번호 불일치
+    def test_password_fail(self):
+        self.login_url = "/user/api-auth/login/"
+        data= {
+                "username": "aaa@gmail.com",
+                "password": "133",
+            }
+        response= self.client.post(self.login_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        #self.assertEqual(response.json(), {'username': "{'detail': 'No active account found with the given credentials'}"})
+
+    # 회원탈퇴
+    # def test_withdraw_success(self):
+    #     self.withdraw_url = f"/api/users/{self.user.id}/withdraw/"
+
+    #     client = APIClient()
+    #     client.force_authenticate(user=self.user)
+
+    #     response = client.delete(self.withdraw_url, format='json')
+    #     self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
