@@ -20,7 +20,7 @@ from django.contrib.auth import authenticate
 from django.shortcuts import render, get_object_or_404
 from myproject.settings import SECRET_KEY, ALGORITHM
 
-
+from django.db.models import F, Sum, Count, Case, When
 
 # 로그인은 Django REST Framework에서 제공되는 URL 이용
 
@@ -41,6 +41,19 @@ class UserGenderStatisticsView(APIView):
         male_cnt = User.objects.filter(gender="M").count()
         female_cnt = User.objects.filter(gender="F").count()
         return Response({"male_count": male_cnt, "female_count": female_cnt}, status=status.HTTP_200_OK)
+
+class UserBirthStatisticsView(APIView):
+    """
+    유저의 출생일을 기준으로, 특정 세대에 속한 유저가 얼마나 되는지 확인합니다.
+    """
+    permission_classes = [AllowAny]
+    def get(self, request):
+        
+        millennial_cnt = User.objects.filter(birth_date__range=["1981-01-01", "1995-12-31"]).count()
+        genz_cnt = User.objects.filter(birth_date__range=["1996-01-01", "2012-12-31"]).count()
+        alpha_cnt = User.objects.filter(birth_date__range=["2013-01-01", "2022-12-31"]).count()
+
+        return Response({"밀레니얼세대(1981-95년생)":millennial_cnt, "Z세대(1996-2012년생)": genz_cnt, "알파세대(2013년생~)": alpha_cnt})
 
 
 # class AuthView(APIView):
