@@ -77,13 +77,9 @@ class LogInSerializer(serializers.Serializer):
         update_last_login(None, user)
 
         return data
-# class UserSerializer(serializers.ModelSerializer):
-    
-#         email = serializers.CharField(required=True, max_length=100, write_only=True,)
-#         password = serializers.CharField(required=True, write_only=True, style={'input_type': 'password'})
-                
-#         class Meta:
-#             model = get_user_model()
-#             fields = ('email', 'nickname','gender', 'password', 'name' )
-
+        
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+          model = User
+          fields = '__all__'
     

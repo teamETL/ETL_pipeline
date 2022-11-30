@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import User
 from rest_framework import generics, status
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import *
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -26,7 +26,8 @@ from django.db.models import F, Sum, Count, Case, When
 # 로그인은 Django REST Framework에서 제공되는 URL 이용
 import logging
 # logger = logging.getLogger('user')
-# 회원가입 커스터마이징
+
+# 회원가입 뷰
 class UserCreateView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = SignupSerializer
@@ -42,6 +43,22 @@ class UserCreateView(generics.CreateAPIView):
 
         #logger.info(serializer.data[0]['id'])
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+# 유저 리스트, 관리자만 접근 가능
+class UserListView(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = SignupSerializer
+    authentication_classes=[JWTAuthentication]
+    permission_classes =[IsAdminUser]
+
+
+
+# 탈퇴 기능 뷰
+class UserWithdrawalView(generics.DestroyAPIView):
+    
+    permission_classes = [IsAuthenticated]
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 
 #aggregation 관련 코드
