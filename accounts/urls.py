@@ -29,4 +29,5 @@ urlpatterns =[
 
     #aggregation 관련 코드
     path('gender-stats/', views.UserGenderStatisticsView.as_view(), name='gender-stats'),
+    path('birth-stats/', views.UserBirthStatisticsView.as_view(), name='birth-stats'),
  ]
