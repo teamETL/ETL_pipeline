@@ -30,6 +30,7 @@ class BlogView(ListCreateAPIView):
     # 필터 기능 추가
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
     filterset_fields = ['user']
+
     def perform_create(self, serializer):
         # 현재 요청한 유저를 작성자로 설정
         serializer.save(user=self.request.user)
@@ -37,7 +38,7 @@ class BlogView(ListCreateAPIView):
     def list(self, request):
         queryset = self.get_queryset()
         serializer = BlogSerializer(queryset, many=True)
-        logger.info(request.user)
+        logger.info("GET Access Board List", extra={'request' : request})
         return Response(serializer.data)
 
     def create(self, request):
@@ -45,10 +46,10 @@ class BlogView(ListCreateAPIView):
  
         if serializer.is_valid():
             serializer.save() #UserSerializer의 유효성 검사를 한 뒤 DB에 저장
-            logger.info(request.user)
+            logger.info("POST Access Create Board", extra={'request' : request})
             return Response(serializer.data, status=status.HTTP_201_CREATED) #client에게 JSON response 전달
         else:
-            logger.info(request.user)
+            logger.info("POST Denied Create Board", extra={'request' : request})
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class BlogDetailView(RetrieveUpdateDestroyAPIView):
@@ -61,21 +62,29 @@ class BlogDetailView(RetrieveUpdateDestroyAPIView):
         instance.views += 1  # 조회수 1 증가
         instance.save()
         serializer = self.get_serializer(instance)
-        logger.info(request.user)
+        return Response({"response" : serializer.data }, status=status.HTTP_201_CREATED)
+        
 
-        return Response(serializer.data)
+
+        
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
         instance.save()
         serializer = self.get_serializer(instance)
-        logger.info(request.user)
+        if serializer.is_valid():
+            serializer.save() #UserSerializer의 유효성 검사를 한 뒤 DB에 저장
+            logger.info("POST Access Revise Board", extra={'request' : request})
+            return Response(serializer.data, status=status.HTTP_201_CREATED) #client에게 JSON response 전달
+        else:
+            logger.info("POST Denied Revise Board", extra={'request' : request})
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
-        return Response(serializer.data)
+        
 
     def destory(self, request, *args, **kwargs):
         blog = self.get_object()
-        logger.info(request.user)
+        logger.info("DELETE Acess Board", extra={'request' : request})
         blog.delete()
 
         return Response({"message": "글이 삭제 되었습니다."})
