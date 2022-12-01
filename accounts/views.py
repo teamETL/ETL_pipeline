@@ -54,7 +54,7 @@ class UserListView(generics.ListAPIView):
 
 # 탈퇴 기능 뷰
 class UserWithdrawalView(generics.DestroyAPIView):
-    
+    authentication_classes=[JWTAuthentication]
     permission_classes = [IsAuthenticated]
     queryset = User.objects.all()
     serializer_class = UserSerializer

@@ -9,7 +9,7 @@ from rest_framework import status
 from django.shortcuts import render
 from rest_framework.views import APIView
 import django_filters
-
+from rest_framework_simplejwt.authentication import JWTAuthentication
 import logging
 logger = logging.getLogger('user')
 
@@ -24,6 +24,7 @@ logger = logging.getLogger('user')
 #     def perform_create(self, serializer):
 #         serializer.save(user=self.request.user)
 class BlogView(ListCreateAPIView):
+    authentication_classes=[JWTAuthentication]
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
@@ -53,6 +54,7 @@ class BlogView(ListCreateAPIView):
 
 class BlogDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Blog.objects.all()
+    authentication_classes=[JWTAuthentication]
     serializer_class = BlogSerializer
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
@@ -81,7 +83,7 @@ class BlogDetailView(RetrieveUpdateDestroyAPIView):
         return Response({"message": "글이 삭제 되었습니다."})
 
 class BlogStatisticsView(APIView):
-
+    authentication_classes=[JWTAuthentication]
     permission_classes = [AllowAny]
     def get(self, request):
         male_cnt = Blog.objects.filter(user__gender="M").count()
