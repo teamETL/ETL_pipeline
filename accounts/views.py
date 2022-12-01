@@ -6,26 +6,20 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import *
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
 from rest_framework import status
 from rest_framework.response import Response
 
-import jwt
+
 from rest_framework.views import APIView
-from .serializers import *
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
+
+
 from rest_framework import status
 from rest_framework.response import Response
-from django.contrib.auth import authenticate
-from django.shortcuts import render, get_object_or_404
-from myproject.settings import SECRET_KEY, ALGORITHM
-
-from django.db.models import F, Sum, Count, Case, When
 
 
 # 로그인은 Django REST Framework에서 제공되는 URL 이용
-import logging
-# logger = logging.getLogger('user')
+
 
 # 회원가입 뷰
 class UserCreateView(generics.CreateAPIView):
@@ -44,11 +38,43 @@ class UserCreateView(generics.CreateAPIView):
         #logger.info(serializer.data[0]['id'])
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+# 로그인 화면
+class UserLogInView(generics.GenericAPIView):
+    permission_classes =[AllowAny]
+    serializer_class = LogInSerializer
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            
+            email = serializer.validated_data['email']
+            
+            # 토큰 검증
+            access_token = serializer.validated_data['access']
+            refresh_token = serializer.validated_data['refresh']
+            res = Response(
+                {
+                    "email": email,
+                    "token": {
+                        "refresh": refresh_token,
+                        "access": access_token,
+                    },
+                },
+                status=status.HTTP_200_OK,
+            ) 
+
+            # 쿠키데이터 저장
+            res.set_cookie("access", access_token, httponly=True)
+            res.set_cookie("refresh", refresh_token, httponly=True)
+
+            return res
+
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 # 유저 리스트, 관리자만 접근 가능
 class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = SignupSerializer
-    authentication_classes=[JWTAuthentication]
     permission_classes =[IsAdminUser]
 
 

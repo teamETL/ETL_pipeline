@@ -1,7 +1,7 @@
 from pythonjsonlogger import jsonlogger
 from pytz import timezone
 import datetime
-
+import json_log_formatter
 
 class CustomJsonFormatter(jsonlogger.JsonFormatter):
     def add_fields(self, log_record, record, extra):
@@ -21,5 +21,20 @@ class CustomJsonFormatter(jsonlogger.JsonFormatter):
             log_record['level'] = record.levelname
 
         log_record['environment'] = 'django'
+
+class CustomisedJSONFormatter(json_log_formatter.JSONFormatter):
+    def json_record(self, message, extra, record):
+        extra['message'] = message
+        #extra['request'] = record
+        # extra['levelname'] = record.__dict__['levelname']
+        # extra['name'] = record.__dict__['name']
+        # extra['lineno'] = record.__dict__['lineno']
+        # extra['filename'] = record.__dict__['filename']
+        # extra['pathname'] = record.__dict__['pathname']
+        # extra['created'] = record.__dict__['created']
+        request = extra.pop('request', None)
+        if request:
+            extra['x_forward_for'] = request.META.get('X-FORWARD-FOR')
+        return extra
 
 

@@ -93,6 +93,13 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'dj_rest_auth.registration',
 ]
+
+# Json logging(formatter sysytem)
+
+
+from .logging_formatters  import *
+
+
 # 로깅설정
 LOGGING = {
     'version': 1,
@@ -111,8 +118,11 @@ LOGGING = {
             'format': '[{server_time}] {message}',
             'style': '{',
         },
-        'standard': {
-            'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+        'standard1': {
+            '()' : CustomJsonFormatter,
+        },
+        'standard2': {
+            '()' : CustomisedJSONFormatter,
         },
         'test': {
             'format' : '{"request" : "%(request)s","response" : "%(response)s"}'
@@ -141,30 +151,19 @@ LOGGING = {
             'level': 'INFO',
             'filters': ['require_debug_true'],
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': BASE_DIR / 'logs/board_request.log',
+            'filename': BASE_DIR / 'logs/board_logging.log',
 
             'maxBytes': 1024*1024*5,  # 5 MB
             'backupCount': 5,
-            'formatter': 'test',
-        },
-        'user': {
-            'level': 'INFO',
-            'encoding': 'utf-8',
-            'filters': ['require_debug_false'],
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': BASE_DIR / 'logs/board_request.log',
-
-            'maxBytes': 1024*1024*5,  # 5 MB
-            'backupCount': 5,
-            'formatter': 'user_info',
+            'formatter': 'standard2',
         },
     },
     'loggers': {
-        'django.request': {
-            'handlers': ['console','board_request'],
-            'level': 'INFO',  # change debug level as appropiate
-            'propagate': False,
-        },
+        # 'django.request': {
+        #     'handlers': ['console','board_request'],
+        #     'level': 'INFO',  # change debug level as appropiate
+        #     'propagate': False,
+        # },
         'django': {
             'handlers': ['console', 'mail_admins', 'board_request'],
             'level': 'INFO',
@@ -175,12 +174,13 @@ LOGGING = {
             'propagate': False,
         },
         'user': {
-            'handlers': ['user'],
+            'handlers': ['console','board_request'],
             'level': 'INFO',
             'propagate': False,
         }, 
     }
 }
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -189,7 +189,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'request_logging.middleware.LoggingMiddleware',
+    #'request_logging.middleware.LoggingMiddleware',  # request logger
 ]
 
 ROOT_URLCONF = 'myproject.urls'
