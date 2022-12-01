@@ -55,12 +55,13 @@ class UserListView(generics.ListAPIView):
 # 탈퇴 기능 뷰
 class UserWithdrawalView(generics.DestroyAPIView):
     
+    authentication_classes=[JWTAuthentication]
     permission_classes = [IsAuthenticated]
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 
-#aggregation 관련 코드
+# aggregation 관련 코드
 class UserGenderStatisticsView(APIView):
     """
     유저의 남녀 수를 확인합니다.

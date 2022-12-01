@@ -9,7 +9,7 @@ from rest_framework import status
 from django.shortcuts import render
 from rest_framework.views import APIView
 import django_filters
-
+from rest_framework_simplejwt.authentication import JWTAuthentication
 import logging
 logger = logging.getLogger('user')
 
@@ -26,6 +26,7 @@ logger = logging.getLogger('user')
 class BlogView(ListCreateAPIView):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
+    authentication_classes=[JWTAuthentication]
     permission_classes = [IsAuthenticatedOrReadOnly]
     # 필터 기능 추가
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
@@ -37,7 +38,7 @@ class BlogView(ListCreateAPIView):
     def list(self, request):
         queryset = self.get_queryset()
         serializer = BlogSerializer(queryset, many=True)
-        logger.info(request.user)
+        logger.info(request.__dict__['_user'])
         return Response(serializer.data)
 
     def create(self, request):
@@ -45,13 +46,14 @@ class BlogView(ListCreateAPIView):
  
         if serializer.is_valid():
             serializer.save() #UserSerializer의 유효성 검사를 한 뒤 DB에 저장
-            logger.info(request.user)
+            logger.info(request.__dict__['_user'])
             return Response(serializer.data, status=status.HTTP_201_CREATED) #client에게 JSON response 전달
         else:
-            logger.info(request.user)
+            logger.info(request.__dict__['_user'])
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class BlogDetailView(RetrieveUpdateDestroyAPIView):
+    authentication_classes=[JWTAuthentication]
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
@@ -61,32 +63,49 @@ class BlogDetailView(RetrieveUpdateDestroyAPIView):
         instance.views += 1  # 조회수 1 증가
         instance.save()
         serializer = self.get_serializer(instance)
-        logger.info(request.user)
+        logger.info(request.__dict__['_user'])
 
-        return Response(serializer.data)
+        if serializer.is_valid():
+            serializer.save() #UserSerializer의 유효성 검사를 한 뒤 DB에 저장
+            logger.info(request.__dict__['_user'])
+            return Response(serializer.data, status=status.HTTP_201_CREATED) #client에게 JSON response 전달
+        else:
+            logger.info(request.__dict__['_user'])
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
         instance.save()
         serializer = self.get_serializer(instance)
-        logger.info(request.user)
+        logger.info(request.__dict__['_user'])
         
-        return Response(serializer.data)
+        if serializer.is_valid():
+            serializer.save() #UserSerializer의 유효성 검사를 한 뒤 DB에 저장
+            logger.info(request.__dict__['_user'])
+            return Response(serializer.data, status=status.HTTP_201_CREATED) #client에게 JSON response 전달
+        else:
+            logger.info(request.__dict__['_user'])
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def destory(self, request, *args, **kwargs):
         blog = self.get_object()
-        logger.info(request.user)
+        logger.info(request.__dict__['_user'])
         blog.delete()
 
-        return Response({"message": "글이 삭제 되었습니다."})
+        if blog:
+            logger.info(request.__dict__['_user'])
+            return Response({"message" : "게시물을 삭제하였습니다."}, status=status.HTTP_201_CREATED) #client에게 JSON response 전달
+        else:
+            logger.info(request.__dict__['_user'])
+            return Response({"message" : "해당 게시물이 존재하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
 
 class BlogStatisticsView(APIView):
-
+    
     permission_classes = [AllowAny]
     def get(self, request):
         male_cnt = Blog.objects.filter(user__gender="M").count()
         female_cnt = Blog.objects.filter(user__gender="F").count()
-        logger.info(request.user)
+        logger.info(request.__dict__['_user'])
         return Response({"Male":male_cnt, "Female": female_cnt}, status=status.HTTP_200_OK)
 
     # def post(self, request):
