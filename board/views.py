@@ -35,22 +35,42 @@ class BlogView(ListCreateAPIView):
         # 현재 요청한 유저를 작성자로 설정
         serializer.save(user=self.request.user)
 
-    def list(self, request):
-        queryset = self.get_queryset()
-        serializer = BlogSerializer(queryset, many=True)
-        logger.info("GET Access Board List", extra={'request' : request})
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        
+        logger.info("GET access Board List", extra={'request':request})
+        page = self.paginate_queryset(queryset)
+        
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
-    def create(self, request):
-        serializer = BlogSerializer(data=request.data) #Request의 data를 UserSerializer로 변환
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        logger.info("POST access Board Creation", extra={'request':request})
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    # def list(self, request):
+    #     queryset = self.get_queryset()
+    #     serializer = BlogSerializer(queryset, many=True)
+    #     logger.info("GET Access Board List", extra={'request' : request})
+    #     return Response(serializer.data)
+
+    # def create(self, request):
+    #     serializer = BlogSerializer(data=request.data) #Request의 data를 UserSerializer로 변환
  
-        if serializer.is_valid():
-            serializer.save() #UserSerializer의 유효성 검사를 한 뒤 DB에 저장
-            logger.info("POST Access Create Board", extra={'request' : request})
-            return Response(serializer.data, status=status.HTTP_201_CREATED) #client에게 JSON response 전달
-        else:
-            logger.info("POST Denied Create Board", extra={'request' : request})
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    #     if serializer.is_valid():
+    #         serializer.save() #UserSerializer의 유효성 검사를 한 뒤 DB에 저장
+    #         logger.info("POST Access Create Board", extra={'request' : request})
+    #         return Response(serializer.data, status=status.HTTP_201_CREATED) #client에게 JSON response 전달
+    #     else:
+    #         logger.info("POST Denied Create Board", extra={'request' : request})
+    #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class BlogDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Blog.objects.all()
@@ -58,36 +78,47 @@ class BlogDetailView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
     def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        instance.views += 1  # 조회수 1 증가
-        instance.save()
-        serializer = self.get_serializer(instance)
-        return Response({"response" : serializer.data }, status=status.HTTP_201_CREATED)
-        
-
-
-        
+        blog = self.get_object()
+        blog.views += 1  # 조회수 1 증가
+        blog.save()
+        serializer = self.get_serializer(blog)
+        logger.info("GET Access Blog Detail", extra={'request':request})
+        return Response(serializer.data)     
+       
 
     def update(self, request, *args, **kwargs):
-        instance = self.get_object()
-        instance.save()
-        serializer = self.get_serializer(instance)
-        if serializer.is_valid():
-            serializer.save() #UserSerializer의 유효성 검사를 한 뒤 DB에 저장
-            logger.info("POST Access Revise Board", extra={'request' : request})
-            return Response(serializer.data, status=status.HTTP_201_CREATED) #client에게 JSON response 전달
-        else:
-            logger.info("POST Denied Revise Board", extra={'request' : request})
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        blog = self.get_object()
+        partial = kwargs.pop('partial', False)
+        
+        # 수정 데이터 직렬화
+        serializer = self.get_serializer(blog, data=request.data, partial=partial)
+
+        # 데이터 유효성 검사
+        serializer.is_valid(raise_exception=True)
+        
+        self.perform_update(serializer) # 글을 업데이트
+        logger.info("PUT Access Revise Blog", extra={'request' : request}) # 로그 남기기
+
+        if getattr(blog, '_prefetched_objects_cache', None):
+            blog._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
+
+        # if serializer.is_valid():
+        #     serializer.save() #UserSerializer의 유효성 검사를 한 뒤 DB에 저장
+        #     logger.info("PUT Access Revise Board", extra={'request' : request})
+        #     return Response(serializer.data, status=status.HTTP_201_CREATED) #client에게 JSON response 전달
+        # else:
+        #     logger.info("PUT Denied Revise Board", extra={'request' : request})
+        #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
         
 
     def destory(self, request, *args, **kwargs):
         blog = self.get_object()
-        logger.info("DELETE Acess Board", extra={'request' : request})
-        blog.delete()
-
-        return Response({"message": "글이 삭제 되었습니다."})
+        self.perform_destroy(blog)
+        logger.info("DELETE Acess Blog", extra={'request' : request})
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class BlogStatisticsView(APIView):
 
