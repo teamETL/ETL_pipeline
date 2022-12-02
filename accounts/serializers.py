@@ -5,13 +5,14 @@ from django.contrib.auth.models import update_last_login
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework.exceptions import ValidationError
+import datetime
 
 
 # 회원가입 시리얼라이져
 class SignupSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(
-        required = True,
-    ),
+    email = serializers.EmailField(required = True),
+    nickname = serializers.CharField(required = True),
+    name = serializers.EmailField(required = True),
     password = serializers.CharField(
         required=True,
         write_only = True,
@@ -29,6 +30,10 @@ class SignupSerializer(serializers.ModelSerializer):
                 "password" : "비밀번호가 일치하지 않습니다."
             })
         
+        # if data['birth_date'] <= datetime.datetime.today():
+        #     raise serializers.ValidationError({
+        #         "birth_date" : "입력 하신 날짜가 올바르지 않습니다. 올바른 날짜를 입력해주세요"
+        #     })
         return data
 
     def create(self, validated_data):
@@ -43,8 +48,12 @@ class SignupSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.refreshtoken = token
         user.save()
-
-        return user
+        data ={
+            'user': user,
+            'refesh' : str(token),
+            'access' : str(token.access_token),
+        }
+        return data
 class LogInSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
     password = serializers.CharField(
