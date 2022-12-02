@@ -9,6 +9,7 @@ from rest_framework import status
 from django.shortcuts import render
 from rest_framework.views import APIView
 import django_filters
+from .hashing import get_hash
 from rest_framework_simplejwt.authentication import JWTAuthentication
 import logging
 logger = logging.getLogger('user')
@@ -41,16 +42,36 @@ class BlogView(ListCreateAPIView):
         logger.info(request.user)
         return Response(serializer.data)
 
-    def create(self, request):
-        serializer = BlogSerializer(data=request.data) #Request의 data를 UserSerializer로 변환
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+
+        logger.info(
+            "POST  content create success",
+            extra={
+                'request':request,
+                'user_id': get_hash(request.user.pk), #hashing 함수 씌우기
+                'board_id': serializer.data['id']
+            })
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    # def list(self, request):
+    #     queryset = self.get_queryset()
+    #     serializer = BlogSerializer(queryset, many=True)
+    #     logger.info("GET Access Board List", extra={'request' : request})
+    #     return Response(serializer.data)
+
+    # def create(self, request):
+    #     serializer = BlogSerializer(data=request.data) #Request의 data를 UserSerializer로 변환
  
-        if serializer.is_valid():
-            serializer.save() #UserSerializer의 유효성 검사를 한 뒤 DB에 저장
-            logger.info(request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED) #client에게 JSON response 전달
-        else:
-            logger.info(request.user)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    #     if serializer.is_valid():
+    #         serializer.save() #UserSerializer의 유효성 검사를 한 뒤 DB에 저장
+    #         logger.info("POST Access Create Board", extra={'request' : request})
+    #         return Response(serializer.data, status=status.HTTP_201_CREATED) #client에게 JSON response 전달
+    #     else:
+    #         logger.info("POST Denied Create Board", extra={'request' : request})
+    #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class BlogDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Blog.objects.all()
@@ -73,14 +94,35 @@ class BlogDetailView(RetrieveUpdateDestroyAPIView):
         serializer = self.get_serializer(instance)
         logger.info(request.user)
         
+        self.perform_update(serializer) # 글을 업데이트
+        logger.info(
+           "PUT content update success",
+           extra={
+                'request':request,
+                'user_id': get_hash(request.user.pk),
+                'board_id': serializer.data['id']
+           })
+
+        if getattr(blog, '_prefetched_objects_cache', None):
+            blog._prefetched_objects_cache = {}
+
         return Response(serializer.data)
 
     def destory(self, request, *args, **kwargs):
         blog = self.get_object()
-        logger.info(request.user)
-        blog.delete()
+        serializer = self.get_serializer(blog)
+        logger.info(
+           "DELETE content success",
+           extra={
+                'request':request,
+                'user_id': get_hash(request.user.pk),
+                'board_id': serializer.data['id']
+           })
 
-        return Response({"message": "글이 삭제 되었습니다."})
+              
+        self.perform_destroy(blog)
+        
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class BlogStatisticsView(APIView):
     authentication_classes=[JWTAuthentication]
