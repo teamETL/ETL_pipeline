@@ -82,16 +82,13 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     
-    # DRF Authentication
-    'dj_rest_auth',
-    'rest_framework.authtoken',
-    
-    # signup
-    'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'dj_rest_auth.registration',
+    # DRF Liberary
+    #'dj_rest_auth',   
+    # 'django.contrib.sites',
+    # 'allauth',
+    # 'allauth.account',
+    # 'allauth.socialaccount',
+    # 'dj_rest_auth.registration',
 ]
 
 # Json logging(formatter sysytem)
@@ -100,86 +97,6 @@ INSTALLED_APPS = [
 from .logging_formatters  import *
 
 
-# 로깅설정
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse',
-        },
-        'require_debug_true': {
-            '()': 'django.utils.log.RequireDebugTrue',
-        },
-    },
-    'formatters': {
-        'django.server': {
-            '()': 'django.utils.log.ServerFormatter',
-            'format': '[{server_time}] {message}',
-            'style': '{',
-        },
-        'standard1': {
-            '()' : CustomJsonFormatter,
-        },
-        'standard2': {
-            '()' : CustomisedJSONFormatter,
-        },
-        'test': {
-            'format' : '{"request" : "%(request)s","response" : "%(response)s"}'
-        },
-        'user_info' :{ 
-            'format' : '{"time" : "%(asctime)s", "level" : "%(levelname)s", "current_user" : "%(message)s"}',
-        },
-    },
-    'handlers': {
-        'console': {
-            'level': 'INFO',
-            'filters': ['require_debug_true'],
-            'class': 'logging.StreamHandler',
-        },
-        'django.server': {
-            'level': 'INFO',
-            'class': 'logging.StreamHandler',
-            'formatter': 'django.server',
-        },
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        },
-        'board_request': {
-            'level': 'INFO',
-            'filters': ['require_debug_true'],
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': BASE_DIR / 'logs/board_logging.log',
-
-            'maxBytes': 1024*1024*5,  # 5 MB
-            'backupCount': 5,
-            'formatter': 'standard2',
-        },
-    },
-    'loggers': {
-        # 'django.request': {
-        #     'handlers': ['console','board_request'],
-        #     'level': 'INFO',  # change debug level as appropiate
-        #     'propagate': False,
-        # },
-        'django': {
-            'handlers': ['console', 'mail_admins'],
-            'level': 'INFO',
-        },
-        'django.server': {
-            'handlers': ['django.server'],
-            'level': 'INFO',
-            'propagate': False,
-        },
-        'user': {
-            'handlers': ['console','board_request'],
-            'level': 'INFO',
-            'propagate': False,
-        }, 
-    }
-}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -195,43 +112,43 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'myproject.urls'
 
 REST_FRAMEWORK = {
+    # 권한 전역 설정
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',  # 인증된 요청인지 확인
+        'rest_framework.permissions.IsAuthenticated',  # 인증된 사용자만 접근가능
         #'rest_framework.permissions.IsAdminUser',  # 관리자만 접근 가능
-        'rest_framework.permissions.AllowAny',  # 누구나 접근 가능        
+        #'rest_framework.permissions.AllowAny',  # 누구나 접근 가능        
     ),
     # 필터링 기능 추가
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 
-    # JWT를 통한 인증 방식 사용
+    # 인증 방식 설정
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
+        # 'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
     ],
-    
+    # Test request 설정
+    "TEST_REQUEST_DEFAULT_FORMAT": "json",
+
     # 전역적 페이징 설정 객체당 최대 10개 반환하도록 설정.
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
 }
 
-# JWT 사용 여부
-REST_USE_JWT = True
-
-# 호출할 Cookie 값
-JWT_AUTH_COOKIE = 'my-app-auth'
-
-# Refresh-Token Cookie 값
-JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
-
-SITE_ID = 1
-ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+# dj-rest-auth  설정 
+# REST_USE_JWT = True  # JWT 사용 여부
+# JWT_AUTH_COOKIE = 'my-app-auth' # 호출할 Cookie 값
+# JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token' # Refresh-Token Cookie 값
+# AUTH_USER_MODEL = 'accounts.User'
+# django-allauth 설정
+# SITE_ID = 1
+# ACCOUNT_UNIQUE_EMAIL = True
+# ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+# ACCOUNT_USERNAME_REQUIRED = False
+# ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_AUTHENTICATION_METHOD = 'email'
+# ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 from datetime import timedelta
 
@@ -240,8 +157,8 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30), 
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7), 
     'ROTATE_REFRESH_TOKENS': False, # Token 재발급
-    'BLACKLIST_AFTER_ROTATION': False,
-    'UPDATE_LAST_LOGIN': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'UPDATE_LAST_LOGIN': True,
 
     'ALGORITHM': ALGORITHM,
     'SIGNING_KEY': SECRET_KEY,
@@ -335,3 +252,84 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# 로깅설정
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'formatters': {
+        'django.server': {
+            '()': 'django.utils.log.ServerFormatter',
+            'format': '[{server_time}] {message}',
+            'style': '{',
+        },
+        'standard1': {
+            '()' : CustomJsonFormatter,
+        },
+        'standard2': {
+            '()' : CustomisedJSONFormatter,
+        },
+        'test': {
+            'format' : '{"request" : "%(request)s","response" : "%(response)s"}'
+        },
+        'user_info' :{ 
+            'format' : '{"time" : "%(asctime)s", "level" : "%(levelname)s", "current_user" : "%(message)s"}',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+        },
+        'django.server': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'django.server',
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        },
+        'board_request': {
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': BASE_DIR / 'logs/board_logging.log',
+
+            'maxBytes': 1024*1024*5,  # 5 MB
+            'backupCount': 5,
+            'formatter': 'standard2',
+        },
+    },
+    'loggers': {
+        # 'django.request': {
+        #     'handlers': ['console','board_request'],
+        #     'level': 'INFO',  # change debug level as appropiate
+        #     'propagate': False,
+        # },
+        'django': {
+            'handlers': ['console', 'mail_admins'],
+            'level': 'INFO',
+        },
+        'django.server': {
+            'handlers': ['django.server'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'user': {
+            'handlers': ['console','board_request'],
+            'level': 'INFO',
+            'propagate': False,
+        }, 
+    }
+}

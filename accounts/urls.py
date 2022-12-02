@@ -21,8 +21,9 @@ urlpatterns =[
     path('user_list/', views.UserListView.as_view(), name='user-list'),
        
     # 로그인 / 로그아웃
-    #path('api-auth/', include('rest_framework.urls')), # 장고 기본 제공 urls
+    #path('', include('dj_rest_auth.urls')), # 장고 기본 제공 urls
     path('login/', views.UserLogInView.as_view(), name='user-login'),
+    #path('drf/', include('rest_framework.urls')),
     
 
     # 회원 탈퇴 
