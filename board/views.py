@@ -40,7 +40,7 @@ class BlogView(ListCreateAPIView):
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         
-        logger.info("GET access Board List", extra={'request':request})
+        #logger.info("GET content list success", extra ={'request':request,'user': request.user.pk})
         page = self.paginate_queryset(queryset)
         
         if page is not None:
@@ -55,7 +55,14 @@ class BlogView(ListCreateAPIView):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        logger.info("POST access Board Creation", extra={'request':request})
+        
+        logger.info(
+            "POST  content create success",
+            extra={
+                'request':request,
+                'user_id': request.user.pk,
+                'board_id': serializer.data['id']
+            })
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
     # def list(self, request):
     #     queryset = self.get_queryset()
@@ -84,7 +91,7 @@ class BlogDetailView(RetrieveUpdateDestroyAPIView):
         blog.views += 1  # 조회수 1 증가
         blog.save()
         serializer = self.get_serializer(blog)
-        logger.info("GET Access Blog Detail", extra={'request':request})
+        #logger.info("GET Access Content Detail", extra={'request':request})
         return Response(serializer.data)     
        
 
@@ -99,7 +106,13 @@ class BlogDetailView(RetrieveUpdateDestroyAPIView):
         serializer.is_valid(raise_exception=True)
         
         self.perform_update(serializer) # 글을 업데이트
-        logger.info("PUT Access Revise Blog", extra={'request' : request}) # 로그 남기기
+        logger.info(
+           "PUT content update success",
+           extra={
+                'request':request,
+                'user_id': request.user.pk,
+                'board_id': serializer.data['id']
+           })
 
         if getattr(blog, '_prefetched_objects_cache', None):
             blog._prefetched_objects_cache = {}
@@ -116,10 +129,20 @@ class BlogDetailView(RetrieveUpdateDestroyAPIView):
         
         
 
-    def destory(self, request, *args, **kwargs):
+    def destroy(self, request, *args, **kwargs):
         blog = self.get_object()
+        serializer = self.get_serializer(blog)
+        logger.info(
+           "DELETE content success",
+           extra={
+                'request':request,
+                'user_id': request.user.pk,
+                'board_id': serializer.data['id']
+           })
+
+              
         self.perform_destroy(blog)
-        logger.info("DELETE Acess Blog", extra={'request' : request})
+        
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class BlogStatisticsView(APIView):
