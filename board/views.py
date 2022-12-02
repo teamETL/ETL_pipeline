@@ -9,6 +9,7 @@ from rest_framework import status
 from django.shortcuts import render
 from rest_framework.views import APIView
 import django_filters
+from .hashing import get_hash
 
 import logging
 logger = logging.getLogger('user')
@@ -55,12 +56,12 @@ class BlogView(ListCreateAPIView):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        
+
         logger.info(
             "POST  content create success",
             extra={
                 'request':request,
-                'user_id': request.user.pk,
+                'user_id': get_hash(request.user.pk), #hashing 함수 씌우기
                 'board_id': serializer.data['id']
             })
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
@@ -110,7 +111,7 @@ class BlogDetailView(RetrieveUpdateDestroyAPIView):
            "PUT content update success",
            extra={
                 'request':request,
-                'user_id': request.user.pk,
+                'user_id': get_hash(request.user.pk),
                 'board_id': serializer.data['id']
            })
 
@@ -136,7 +137,7 @@ class BlogDetailView(RetrieveUpdateDestroyAPIView):
            "DELETE content success",
            extra={
                 'request':request,
-                'user_id': request.user.pk,
+                'user_id': get_hash(request.user.pk),
                 'board_id': serializer.data['id']
            })
 
