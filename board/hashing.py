@@ -1,5 +1,9 @@
 import hashlib
 import os
+from cryptography.fernet import Fernet
+from pathlib import Path
+import datetime
+import json
 
 def get_hash(integer):
     salt = os.urandom(32) #binary 값 생성
@@ -29,38 +33,66 @@ def get_hash(integer):
     hex_hash = digest.hex()
     return hex_hash #바이트 문자열을 16진수로 변환한 문자열(hex)을 반환
 
-# #log file을 json 라이브러리를 이용하여 받아오기
-# import json
-# from pathlib import Path
 
-# mod_path = Path(__file__).parent
-# absolute_logfile_path = (mod_path /"../logs/board_logging.log").resolve() #resolve: 절대 경로 반환
+def encrypt(plaintext):
+    """
+    양방향 암호화를 사용하여 key를 생성 및 별도 파일에 저장하며, 암호화된 데이터를 반환하는 함수
+    plaintext: 암호화하려는 데이터(json 형태)
+    """
+    #logkey.key 파일에서 key값 불러오기
+    mod_path = Path(__file__).parent
+    absolute_keyfile_path = (mod_path /"./logkey.key").resolve() #resolve: 절대 경로 반환
 
+    my_file = Path(absolute_keyfile_path)
+    if my_file.is_file():
+        # 'logkey.key' 파일이 존재
+        with open(absolute_keyfile_path,'rb') as file:
+            key = file.read()
+    else:
+        #키 생성, 'logkey.key' 파일 생성 및 키값 저장
+        key = Fernet.generate_key()
+        with open('logkey.key','wb') as file:
+            file.write(key)
+    
+    fernet = Fernet(key)
+    json_log = plaintext
+    encrypt_str = fernet.encrypt(f"{json_log}".encode('ascii'))
+    # decrypt_str = fernet.decrypt(encrypt_str)
+    return encrypt_str
 
-# # 로그 파일 읽어오기
-# data_list = []
+def update_file():
+    """
+    로그 파일에 로그가 추가될 때마다 해당 내용을 가져와서 암호화된 내용을 별도 파일에 저장하는 함수
+    """
+    #로그 파일 읽어오기
+    mod_path = Path(__file__).parent
+    absolute_logfile_path = (mod_path /"../logs/board_logging.log").resolve()
 
-# with open(absolute_logfile_path, 'r') as file:
-#     while True:
-#         # Get next line from file
-#         line = file.readline()
-#         line = json.loads(line)
-#         data_list.append(line)
-#         # if line is empty
-#         # end of file is reached
-#         if not line:
-#             break
+    #로그 파일의 마지막 줄 읽어오기
+    with open(absolute_logfile_path, 'rb') as f:
+        try:  # catch OSError in case of a one line file 
+            f.seek(-2, os.SEEK_END)
+            while f.read(1) != b'\n':
+                f.seek(-2, os.SEEK_CUR)
+        except OSError:
+            f.seek(0)
+        last_line = f.readline().decode()
 
-# # print(data_list)
-# first_dict = data_list[0]
-# print(first_dict)
+    #데이터 생성하기
+    data = encrypt(last_line).decode('utf8')
+    current_time = datetime.datetime.now()
+    timestamp_now = current_time.timestamp()
 
-# # 데이터 수정
-# data["Olivia"]["age"] = 26
-# data["Olivia"]["hobby"].append("take a picture")
-# data["Tyler"]["age"] = 29
-# data["Tyler"]["hobby"].append("travel")
+    encrypted = {}
+    encrypted["data"] = data
+    encrypted["current_time"] = timestamp_now
 
-# # 기존 json 파일 덮어쓰기
-# with open(file_path, 'w', encoding='utf-8') as file:
-#     json.dump(data, file, indent="\t")
+    json_val = json.dumps(encrypted)
+    newLogfile_path = Path(absolute_logfile_path).parent
+    newLogfile_path = (newLogfile_path /"encrypted_log.json").resolve() #logs 폴더에 저장
+
+    #this writes your new, encrypted data into a new JSON file
+    with open(newLogfile_path, 'a') as file:
+        file.write(json_val)
+
+update_file()

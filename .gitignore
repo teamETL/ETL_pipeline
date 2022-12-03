@@ -6,3 +6,5 @@ migrations
 __pycache__
 logkey.key
 .vscode/settings.json
+board/hashing.ipynb
+logkey.key
