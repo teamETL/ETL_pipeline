@@ -9,7 +9,7 @@ from rest_framework import status
 from django.shortcuts import render
 from rest_framework.views import APIView
 import django_filters
-from .hashing import get_hash
+from .hashing import get_hash, update_file, encrypt
 
 import logging
 logger = logging.getLogger('user')
@@ -64,7 +64,9 @@ class BlogView(ListCreateAPIView):
                 'user_id': get_hash(request.user.pk), #hashing 함수 씌우기
                 'board_id': serializer.data['id']
             })
+        update_file() #encrypted_log update
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        
     # def list(self, request):
     #     queryset = self.get_queryset()
     #     serializer = BlogSerializer(queryset, many=True)
@@ -117,6 +119,7 @@ class BlogDetailView(RetrieveUpdateDestroyAPIView):
 
         if getattr(blog, '_prefetched_objects_cache', None):
             blog._prefetched_objects_cache = {}
+        update_file() #encrypted_log update
 
         return Response(serializer.data)
 
@@ -141,7 +144,7 @@ class BlogDetailView(RetrieveUpdateDestroyAPIView):
                 'board_id': serializer.data['id']
            })
 
-              
+        update_file() #encrypted_log update
         self.perform_destroy(blog)
         
         return Response(status=status.HTTP_204_NO_CONTENT)
