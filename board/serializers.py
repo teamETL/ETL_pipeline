@@ -2,15 +2,9 @@ from .models import Blog
 from rest_framework import serializers
 
 class BlogSerializer(serializers.ModelSerializer):
-    user = serializers.ReadOnlyField(source = 'user.email')
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
     views = serializers.IntegerField(read_only=True)
     class Meta:
         model = Blog
-        fields = ('id','title','created_at','updated_at','user','body','views')
+        fields = ('id','user','title','created_at','updated_at','body','views')
 
-class UsernameSerializer(serializers.Serializer):
-    user = serializers.CharField(required=True)
-
-    class Meta:
-        Model = Blog
-        fileds =('user')
