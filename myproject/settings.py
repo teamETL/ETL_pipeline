@@ -99,6 +99,7 @@ from .logging_formatters  import *
 
 
 MIDDLEWARE = [
+    'myproject.middlewares.jwt_middleware.SecureJwtRequestMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -106,6 +107,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'myproject.middlewares.jwt_middleware.SecureJwtResponseMiddleware',
     #'request_logging.middleware.LoggingMiddleware',  # request logger
 ]
 

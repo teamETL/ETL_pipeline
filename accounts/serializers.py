@@ -3,13 +3,13 @@ from rest_framework import serializers, status
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import update_last_login
 from django.contrib.auth import authenticate
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework.exceptions import ValidationError
 import datetime
-
-
+from django.conf import settings
+from accounts.custom_jwt import CustomObtainPairSerializer
 # 회원가입 시리얼라이져
 class SignupSerializer(serializers.ModelSerializer):
+
     email = serializers.EmailField(required = True),
     nickname = serializers.CharField(required = True),
     name = serializers.EmailField(required = True),
@@ -48,12 +48,10 @@ class SignupSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.refreshtoken = token
         user.save()
-        data ={
-            'user': user,
-            'refesh' : str(token),
-            'access' : str(token.access_token),
-        }
-        return data
+        
+        return user
+
+# 로그인 시리얼라이저
 class LogInSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
     password = serializers.CharField(
@@ -66,7 +64,7 @@ class LogInSerializer(serializers.Serializer):
         user = authenticate(**data)
         if user:
             update_last_login(None, user)
-            token = TokenObtainPairSerializer.get_token(user)
+            token = CustomObtainPairSerializer.get_token(user)
             refresh = str(token)
             access = str(token.access_token)
             data = {
@@ -76,40 +74,12 @@ class LogInSerializer(serializers.Serializer):
             }
             return data
 
-        raise ValidationError({"detail": "No active account found with the given credentials"}, 'username', status_code=status.HTTP_401_UNAUTHORIZED)
+        raise ValidationError({"detail": "No active account found with the given credentials"}, 'email', status_code=status.HTTP_401_UNAUTHORIZED)
 
-# # 로그인 시리얼라이져 
-# class LogInSerializer(serializers.Serializer):
-#     email = serializers.EmailField(required = True, max_length=64, write_only=True ),
-#     password = serializers.CharField(required=True, style={'input_type': 'password'} )
-    
-#     class Meta:
-#         model = User
-#         fields = ('email', 'password')
-        
-#     def validate(self, data):
-#         email = data.get('email',None)
-#         password = data.get('password',None)
 
-#         if User.objects.filter(email=email).exists():
-#             user = User.objects.get(email=email)
 
-#             if not user.check_password(password):
-#                 raise serializers.ValidationError('이메일과 비밀번호가 일치하지 않습니다.')
-        
-#         else:
-#             raise serializers.ValidationError("존재하지 않는 이메일입니다. 해당 이메일이 맞는지 확인해주세요.")
-        
 
-#         token = RefreshToken.for_user(user=user)
-#         data = {
-#             'email' : user.email,
-#             'refresh_token' : str(token),
-#             'access_token' : str(token.access_token)
-#         }
-#         update_last_login(None, user)
 
-#         return data
         
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
