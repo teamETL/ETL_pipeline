@@ -2,13 +2,13 @@ import hashlib
 import os
 from cryptography.fernet import Fernet
 from pathlib import Path
-import datetime
+from dateutil import parser #epoch time 생성
 import json
+from uuid import uuid4 #recordId 생성
 
 def get_hash(integer):
     salt = os.urandom(32) #binary 값 생성
     #ex)\xa9\x84\x01\x96\xa4\t\xadP\x1e\xf3:\x94[\xb7\x9c=\xfebI\x03\xa2\x05\xd5\x9a\x19\x9b\xabhO\x13\xb8\x83
-
     #Salted-Hash = SHA256(유저가 입력한 password + salt)
 
     """
@@ -62,7 +62,8 @@ def encrypt(plaintext):
 
 def update_file():
     """
-    로그 파일에 로그가 추가될 때마다 해당 내용을 가져와서 암호화된 내용을 별도 파일에 저장하는 함수
+    로그 파일에 로그가 추가될 때마다 해당 내용을 가져와서 암호화된 내용을 별도 JSON 파일에 저장하는 함수
+    recordId, ArrivalTimestamp 생성 후 암호화된 데이터 (data)와 함께 저장
     """
     #로그 파일 읽어오기
     mod_path = Path(__file__).parent
@@ -80,19 +81,19 @@ def update_file():
 
     #데이터 생성하기
     data = encrypt(last_line).decode('utf8')
-    current_time = datetime.datetime.now()
-    timestamp_now = current_time.timestamp()
+    data_dict = json.loads(last_line) #json 형태의 log를 dictionary 형태로 변환
+    strtime = data_dict["time"]
+    epoch_time = parser.parse(strtime).timestamp() #string 형태의 로그 생성 시간을 timestamp 형태로 변환
 
     encrypted = {}
-    encrypted["data"] = data
-    encrypted["current_time"] = timestamp_now
+    encrypted["recordId"] = uuid4().int  #랜덤한 고유값
+    encrypted["ArrivalTimestamp"] = epoch_time  #로그 생성 시간 (epoch time으로 표시)
+    encrypted["data"] = data  #암호화된 개별 로그 데이터값
 
-    json_val = json.dumps(encrypted)
+    json_val = json.dumps(encrypted, indent=4)
     newLogfile_path = Path(absolute_logfile_path).parent
     newLogfile_path = (newLogfile_path /"encrypted_log.json").resolve() #logs 폴더에 저장
 
-    #this writes your new, encrypted data into a new JSON file
+    #JSON 형식의 로그 파일에 추가하기
     with open(newLogfile_path, 'a') as file:
-        file.write(json_val)
-
-update_file()
+        file.write(json_val+",\n")
