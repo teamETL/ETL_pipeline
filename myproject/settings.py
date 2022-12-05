@@ -73,7 +73,10 @@ INSTALLED_APPS = [
     # Apps
     'board',
     'accounts',
+    'bot',
 
+    # scheduler
+    'django_apscheduler',
 
     # filters
     'django_filters',
@@ -82,7 +85,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     
-    # DRF Liberary
+    # DRF Library
+    #'corsheaders',
     #'dj_rest_auth',   
     # 'django.contrib.sites',
     # 'allauth',
@@ -97,8 +101,14 @@ INSTALLED_APPS = [
 from .logging_formatters  import *
 
 
+# APscheduler 설정
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"  # Default
+
+SCHEDULER_DEFAULT = True
 
 MIDDLEWARE = [
+    #'myproject.middlewares.jwt_middleware.SecureJwtRequestMiddleware',
+    #'corsheaders.middleware.CorsMiddleware'
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -106,9 +116,38 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #'myproject.middlewares.jwt_middleware.SecureJwtResponseMiddleware',
     #'request_logging.middleware.LoggingMiddleware',  # request logger
 ]
+# CORS Settings
 
+# 모든 접근을 허락함 - 제한하고 싶다면 'CORS_ALLOWED_ORIGINS=['168.127.0.1']'과 같이 작성
+CORS_ORIGIN_ALLOW_ALL = True
+# 쿠키 정보를 같이 받을건지에 대한 Boolean
+CORS_ALLOW_CREDENTIALS = True
+
+# CORS를 통해 요청받을 수 있는 http 메소드
+CORS_ALLOW_METHODS = (
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+)
+
+# 요청을 받을 때 헤더에 담길 수 있는 정보 명시
+CORS_ALLOW_HEADERS = (
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+)
 ROOT_URLCONF = 'myproject.urls'
 
 REST_FRAMEWORK = {
@@ -124,7 +163,7 @@ REST_FRAMEWORK = {
     # 인증 방식 설정
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        # 'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+        #'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
         # 'rest_framework.authentication.SessionAuthentication',
         # 'rest_framework.authentication.TokenAuthentication',
     ],
@@ -140,7 +179,7 @@ REST_FRAMEWORK = {
 # REST_USE_JWT = True  # JWT 사용 여부
 # JWT_AUTH_COOKIE = 'my-app-auth' # 호출할 Cookie 값
 # JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token' # Refresh-Token Cookie 값
-# AUTH_USER_MODEL = 'accounts.User'
+# AUTH_USER_MODEL = 'accounts .User'
 # django-allauth 설정
 # SITE_ID = 1
 # ACCOUNT_UNIQUE_EMAIL = True
@@ -157,7 +196,7 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30), 
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7), 
     'ROTATE_REFRESH_TOKENS': False, # Token 재발급
-    'BLACKLIST_AFTER_ROTATION': True,
+    'BLACKLIST_AFTER_ROTATION': False,
     'UPDATE_LAST_LOGIN': True,
 
     'ALGORITHM': ALGORITHM,
@@ -281,7 +320,7 @@ LOGGING = {
             'format' : '{"request" : "%(request)s","response" : "%(response)s"}'
         },
         'user_info' :{ 
-            'format' : '{"time" : "%(asctime)s", "level" : "%(levelname)s", "current_user" : "%(message)s"}',
+            'format' : '{"time" : "%(asctime)s", "level" : "%(levelname)s", "message" : "%(message)s"}',
         },
     },
     'handlers': {
@@ -310,6 +349,16 @@ LOGGING = {
             'backupCount': 5,
             'formatter': 'standard2',
         },
+        'middleware': {
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': BASE_DIR / 'logs/middleware.log',
+
+            'maxBytes': 1024*1024*5,  # 5 MB
+            'backupCount': 5,
+            'formatter': 'user_info',
+        },
     },
     'loggers': {
         # 'django.request': {
@@ -328,6 +377,11 @@ LOGGING = {
         },
         'user': {
             'handlers': ['console','board_request'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'middleware': {
+            'handlers': ['console','middleware'],
             'level': 'INFO',
             'propagate': False,
         }, 

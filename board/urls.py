@@ -19,9 +19,10 @@ from rest_framework.urlpatterns import format_suffix_patterns
 # router.register(r'blog', views.BlogViewSet)
 
 urlpatterns =[
-    path('', views.BlogView.as_view(), name='board-list'),
+    path('', views.BlogListView.as_view(), name='board-list'),
+    path('create/',views.BlogCreateView.as_view(), name='board-create'),
     path('<int:pk>/', views.BlogDetailView.as_view(), name='user-board'),
-    path('statistic/', views.BlogStatisticsView.as_view(), name='board-statistics')
+    path('statistic/', views.BlogStatisticsView.as_view(), name='board-statistics'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

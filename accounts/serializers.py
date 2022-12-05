@@ -1,12 +1,15 @@
 from .models import User
 from rest_framework import serializers, status
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.serializers import *
 from django.contrib.auth.models import update_last_login
 from django.contrib.auth import authenticate
 from rest_framework.exceptions import ValidationError
 import datetime
 from django.conf import settings
-from accounts.custom_jwt import CustomObtainPairSerializer
+from customJWT.custom_jwt import CustomJWTObtainPairSerializer
+
+
 # 회원가입 시리얼라이져
 class SignupSerializer(serializers.ModelSerializer):
 
@@ -44,9 +47,9 @@ class SignupSerializer(serializers.ModelSerializer):
             gender = validated_data['gender'],
             birth_date = validated_data['birth_date']
         )
-        token = RefreshToken.for_user(user)
+        #token = RefreshToken.for_user(user)
         user.set_password(validated_data['password'])
-        user.refreshtoken = token
+        #user.refreshtoken = token
         user.save()
         
         return user
@@ -64,7 +67,7 @@ class LogInSerializer(serializers.Serializer):
         user = authenticate(**data)
         if user:
             update_last_login(None, user)
-            token = CustomObtainPairSerializer.get_token(user)
+            token = TokenObtainPairSerializer.get_token(user)
             refresh = str(token)
             access = str(token.access_token)
             data = {
@@ -74,7 +77,7 @@ class LogInSerializer(serializers.Serializer):
             }
             return data
 
-        raise ValidationError({"detail": "No active account found with the given credentials"}, 'email', status_code=status.HTTP_401_UNAUTHORIZED)
+        raise ValidationError({"detail": "No active account found with the given credentials"}, 'email')
 
 
 

@@ -1,7 +1,8 @@
 from django.urls import path, include
 from . import views
 from rest_framework import urls
-from accounts.custom_jwt import CustomObtainPairView
+from customJWT.custom_jwt import CustomJWTObtainPairView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
 """
 http://localhost:8000/account/password/reset/
@@ -27,7 +28,9 @@ urlpatterns =[
     path('<int:pk>/withdraw/', views.UserWithdrawalView.as_view(), name='account-delete'),
 
     # 토큰 인증 view
-    path('token/',CustomObtainPairView.as_view()),
+    path('token/',TokenObtainPairView.as_view()),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_obtain_pair'),
+    path('token/verify/',  TokenVerifyView.as_view(), name='token_verify'  ),
 
     # aggregation View
     path('gender-stats/', views.UserGenderStatisticsView.as_view(), name='gender-stats'),
