@@ -1,7 +1,8 @@
 from django.urls import path, include
 from . import views
 from rest_framework import urls
-
+from customJWT.custom_jwt import CustomJWTObtainPairView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
 """
 http://localhost:8000/account/password/reset/
@@ -21,13 +22,15 @@ urlpatterns =[
     path('user_list/', views.UserListView.as_view(), name='user-list'),
        
     # 로그인 / 로그아웃
-    #path('', include('dj_rest_auth.urls')), # 장고 기본 제공 urls
     path('login/', views.UserLogInView.as_view(), name='user-login'),
-    #path('drf/', include('rest_framework.urls')),
-    
 
     # 회원 탈퇴 
-    path("<int:pk>/withdraw/", views.UserWithdrawalView.as_view(), name='account-delete'),
+    path('<int:pk>/withdraw/', views.UserWithdrawalView.as_view(), name='account-delete'),
+
+    # 토큰 인증 view
+    path('token/',TokenObtainPairView.as_view()),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_obtain_pair'),
+    path('token/verify/',  TokenVerifyView.as_view(), name='token_verify'  ),
 
     # aggregation View
     path('gender-stats/', views.UserGenderStatisticsView.as_view(), name='gender-stats'),

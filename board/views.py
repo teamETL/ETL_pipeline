@@ -12,6 +12,9 @@ import django_filters
 from .hashing import get_hash, update_file, encrypt
 from rest_framework_simplejwt.authentication import JWTAuthentication
 import logging
+from rest_framework.decorators import action
+
+
 logger = logging.getLogger('user')
 
 # Viewset을 활용한 게시판 기능.
@@ -24,8 +27,8 @@ logger = logging.getLogger('user')
 
 #     def perform_create(self, serializer):
 #         serializer.save(user=self.request.user)
-class BlogView(ListCreateAPIView):
-    authentication_classes=[JWTAuthentication]
+class BlogListView(ListAPIView):
+    
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
     authentication_classes=[JWTAuthentication]
@@ -34,9 +37,7 @@ class BlogView(ListCreateAPIView):
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
     filterset_fields = ['user']
 
-    def perform_create(self, serializer):
-        # 현재 요청한 유저를 작성자로 설정
-        serializer.save(user=self.request.user)
+
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
@@ -50,8 +51,17 @@ class BlogView(ListCreateAPIView):
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+    
+    
+class BlogCreateView(CreateAPIView):
+    authentication_classes=[JWTAuthentication]
+    permission_classes =[IsAuthenticated]
+    serializer_class = BlogSerializer
 
-    def create(self, request, *args, **kwargs):
+    def perform_create(self, serializer):
+        # 현재 요청한 유저를 작성자로 설정
+        serializer.save(user=self.request.user)
+    def create(self, request, *args, **kwrags):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
@@ -66,31 +76,19 @@ class BlogView(ListCreateAPIView):
             })
         update_file() #encrypted_log update
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-        
-    # def list(self, request):
-    #     queryset = self.get_queryset()
-    #     serializer = BlogSerializer(queryset, many=True)
-    #     logger.info("GET Access Board List", extra={'request' : request})
-    #     return Response(serializer.data)
 
-    # def create(self, request):
-    #     serializer = BlogSerializer(data=request.data) #Request의 data를 UserSerializer로 변환
- 
-    #     if serializer.is_valid():
-    #         serializer.save() #UserSerializer의 유효성 검사를 한 뒤 DB에 저장
-    #         logger.info("POST Access Create Board", extra={'request' : request})
-    #         return Response(serializer.data, status=status.HTTP_201_CREATED) #client에게 JSON response 전달
-    #     else:
-    #         logger.info("POST Denied Create Board", extra={'request' : request})
-    #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class BlogDetailView(RetrieveUpdateDestroyAPIView):
     authentication_classes=[JWTAuthentication]
     queryset = Blog.objects.all()
-    authentication_classes=[JWTAuthentication]
     serializer_class = BlogSerializer
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
+    @action(
+        detail=False,
+        permission_classes=[AllowAny]        
+    )
     def retrieve(self, request, *args, **kwargs):
         blog = self.get_object()
         blog.views += 1  # 조회수 1 증가
