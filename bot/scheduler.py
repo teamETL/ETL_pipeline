@@ -17,5 +17,4 @@ def start():
     @scheduler.scheduled_job('cron', minute = '*/30', name = 'auto_bot')
     def auto_bot():
         bot_activate(10)
-        compressor() #압축 알고리즘 적용
     scheduler.start()
