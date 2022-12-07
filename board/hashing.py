@@ -7,29 +7,17 @@ import json
 from uuid import uuid4 #recordId 생성
 
 def get_hash(integer):
+    """
+    입력한 정수값을 binary 문자열로 인코딩 후, salt값을 append하여 SHA256 알고리즘을 이용하여 해시값을 생성하는 함수
+    """
+
     salt = os.urandom(32) #binary 값 생성
     #ex)\xa9\x84\x01\x96\xa4\t\xadP\x1e\xf3:\x94[\xb7\x9c=\xfebI\x03\xa2\x05\xd5\x9a\x19\x9b\xabhO\x13\xb8\x83
-    #Salted-Hash = SHA256(유저가 입력한 password + salt)
+    # 
 
-    """
-    hashlib.pbkdf2_hmac():
-    Returns a binary digest for the PBKDF2 hash algorithm of `data`
-    with the given `salt`. It iterates `iterations` times and produces a
-    key of `keylen` bytes. By default, SHA-256 is used as hash function;
-    a different hashlib `hashfunc` can be provided.
-
-    :param data: the data to derive.
-    :param salt: the salt for the derivation.
-    :param iterations: the number of iterations.
-    :param keylen: the length of the resulting key.  If not provided
-                    the digest size will be used.
-    :param hashfunc: the hash function to use.  This can either be the
-                        string name of a known hash function or a function
-                        from the hashlib module.  Defaults to sha256.
-    """
     plainstring = str(integer)
     plaintext = plainstring.encode() #encode하고 싶은 문자열을 binary 문자열로 인코딩
-    digest = hashlib.pbkdf2_hmac('sha256', plaintext, salt, 10000) #digest 객체는 생성된 해시값을 갖고 있다
+    digest = hashlib.pbkdf2_hmac('sha256', plaintext, salt, 10000) #digest 객체는 생성된 해시값을 가짐
     hex_hash = digest.hex()
     return hex_hash #바이트 문자열을 16진수로 변환한 문자열(hex)을 반환
 
@@ -90,10 +78,22 @@ def update_file():
     encrypted["ArrivalTimestamp"] = epoch_time  #로그 생성 시간 (epoch time으로 표시)
     encrypted["data"] = data  #암호화된 개별 로그 데이터값
 
-    json_val = json.dumps(encrypted, indent=4)
     newLogfile_path = Path(absolute_logfile_path).parent
     newLogfile_path = (newLogfile_path /"encrypted_log.json").resolve() #logs 폴더에 저장
 
-    #JSON 형식의 로그 파일에 추가하기
-    with open(newLogfile_path, 'a') as file:
-        file.write(json_val+",\n")
+    json_root = {"encrypted_logs": []} #json 파일 생성 시 필요한 root 추가
+    json_root = json.dumps(json_root, indent=4)
+
+    my_file = Path(newLogfile_path)
+    if not my_file.is_file():
+        with open(newLogfile_path,'w') as file:
+            file.write(json_root)
+    
+    with open(newLogfile_path,'r+') as file:
+        file_data = json.load(file)
+        # Join encrypted with file_data inside encrypted_logs
+        file_data["encrypted_logs"].append(encrypted)
+        # Sets file's current position at offset.
+        file.seek(0)
+        # convert back to json.
+        json.dump(file_data, file, indent = 4)
