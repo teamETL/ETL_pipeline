@@ -1,0 +1,12 @@
+{
+    "dev": {
+        "aws_region": "ap-northeast-2",
+        "django_settings": "myproject.settings",
+        "profile_name": "default",
+        "project_name": "etl-pipeline",
+        "runtime": "python3.9",
+        "s3_bucket": "zappa-lzj6af4pa",
+        "slim_handler": "true",
+        "keep_warm": "false"
+    }
+}
