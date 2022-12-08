@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: don't run with debug turned on in production!
 
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['127.0.0.1','.herokuapp.com']
 
 # 2. 각 호출자가 기본 매개변수를 전달할 필요가 없도록 환경 변수의 체계 기반 조회를 제공합니다
 # 즉, 환경변수를 불러올 수 있는 상태로 변화한 것(connection 객체라고 생각해주시면 됩니다.)
@@ -86,7 +86,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     
     # DRF Library
-    #'corsheaders',
+    'corsheaders',
     #'dj_rest_auth',   
     # 'django.contrib.sites',
     # 'allauth',
@@ -108,7 +108,7 @@ SCHEDULER_DEFAULT = True
 
 MIDDLEWARE = [
     #'myproject.middlewares.jwt_middleware.SecureJwtRequestMiddleware',
-    #'corsheaders.middleware.CorsMiddleware'
+    
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -116,6 +116,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     #'myproject.middlewares.jwt_middleware.SecureJwtResponseMiddleware',
     #'request_logging.middleware.LoggingMiddleware',  # request logger
 ]
