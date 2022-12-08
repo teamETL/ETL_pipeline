@@ -27,5 +27,3 @@ def s3_upload():
     
     #변수: 순서대로 로컬 파일명, s3의 버킷명, s3에 저장되는 파일명
     s3.upload_file(file_path, bucket_name, file_name)
-
-s3_upload()
