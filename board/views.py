@@ -155,7 +155,7 @@ class BlogDetailView(RetrieveUpdateDestroyAPIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class BlogStatisticsView(APIView):
-    authentication_classes=[JWTAuthentication]    authentication_classes=[JWTAuthentication]
+    authentication_classes=[JWTAuthentication]  
     permission_classes = [AllowAny]
     def get(self, request):
         male_cnt = Blog.objects.filter(user__gender="M").count()
