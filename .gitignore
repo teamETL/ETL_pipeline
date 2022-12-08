@@ -8,3 +8,10 @@ logkey.key
 .vscode/settings.json
 board/hashing.ipynb
 logkey.key
+logs/middleware.log
+logs/encrypted_log_2.json
+logs/encrypted_log.json
+logs/compressed_log.gz
+logs/board_request.log
+logkey.key
+logs/board_logging.log

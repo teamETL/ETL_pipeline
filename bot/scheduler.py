@@ -5,7 +5,7 @@ from apscheduler.executors.pool import ProcessPoolExecutor, ThreadPoolExecutor
 from django_apscheduler.jobstores import register_events, DjangoJobStore
 import time
 from .bots import bot_activate
-from myproject.compress import compressor
+
 
 def start():
     '''
