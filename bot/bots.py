@@ -91,3 +91,7 @@ def bot_activate(num):
     content_id_list = create_content(access_key_list)
     revise_content(access_key_list, content_id_list)
     delete_content(access_key_list, content_id_list)
+
+if __name__ == '__main__':
+    # 원하는 bot 개수 입력
+    bot_activate(15)

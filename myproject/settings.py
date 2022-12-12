@@ -344,7 +344,7 @@ LOGGING = {
         },
         'board_request': {
             'level': 'INFO',
-            'filters': ['require_debug_true'],
+            'filters': ['require_debug_false'],
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': BASE_DIR / 'logs/board_logging.log',
 

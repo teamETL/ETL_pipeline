@@ -58,11 +58,13 @@ class BlogCreateView(CreateAPIView):
     authentication_classes=[JWTAuthentication]
     permission_classes =[IsAuthenticated]
     serializer_class = BlogSerializer
+    http_method_names= ['get', 'head','post']
 
     def perform_create(self, serializer):
         # 현재 요청한 유저를 작성자로 설정
         serializer.save(user=self.request.user)
     def create(self, request, *args, **kwrags):
+        self.http_method_names.append("GET")
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
@@ -76,14 +78,13 @@ class BlogCreateView(CreateAPIView):
                 'board_id': serializer.data['id']
             })
         update_file() #encrypted_log update
-        update_file() #encrypted_log update
+        
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         
 
 
 
 class BlogDetailView(RetrieveUpdateDestroyAPIView):
-    authentication_classes=[JWTAuthentication]
     queryset = Blog.objects.all()
     authentication_classes=[JWTAuthentication]
     serializer_class = BlogSerializer
@@ -124,8 +125,7 @@ class BlogDetailView(RetrieveUpdateDestroyAPIView):
         if getattr(blog, '_prefetched_objects_cache', None):
             blog._prefetched_objects_cache = {}
         update_file() #encrypted_log update
-        update_file() #encrypted_log update
-
+        
         return Response(serializer.data)
 
         # if serializer.is_valid():
