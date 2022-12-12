@@ -16,7 +16,7 @@ def create_bot(num):
             "name" : f"bot{i}",
             "birth_date" : datetime.today().strftime("%Y-%m-%d"),
         }
-        response = requests.post("http://127.0.0.1:8000/user/signup/", json=bot_form)
+        response = requests.post("http://13.125.185.102/user/signup/", json=bot_form)
 
     
     return  f"{num}개의 bot accounts 생성 complete"
@@ -31,4 +31,4 @@ def create_bot(num):
 
 if __name__ == '__main__':
     # 원하는 bot 개수 입력
-    create_bot(10)
+    create_bot(40)
