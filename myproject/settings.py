@@ -75,8 +75,8 @@ INSTALLED_APPS = [
     'accounts',
     'bot',
 
-    # scheduler
-    'django_apscheduler',
+    # scheduler -> 배포환경에서는 apcheduler가 작동을 안하는 것같음.
+    #'django_apscheduler',
 
     # filters
     'django_filters',

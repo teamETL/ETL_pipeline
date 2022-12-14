@@ -27,7 +27,7 @@ def get_access(bot_list):
 
     for bot in bot_list:
         print(bot)
-        response = requests.post("http://13.125.185.102/user/login/", json=bot)
+        response = requests.post("http://3.38.181.57/user/login/", json=bot)
         print(response.text)
         access_key = json.loads(response.text)['token']['access']
         access_list.append(access_key)
@@ -42,7 +42,7 @@ def create_content(access_list):
         rand_num = random.randrange(1,1000)
         headers = {"Authorization": f"Bearer {access_key}"}
         data = {"title": f"글 작성 bot {rand_num}", "body": f"글 내용 생성 bot {rand_num}"}
-        response = requests.post("http://13.125.185.102/blog/create/",json=data, headers=headers)
+        response = requests.post("http://3.38.181.57/blog/create/",json=data, headers=headers)
         content_info = json.loads(response.text)
         print(content_info)
         content_id_list.append(content_info['id'])
@@ -60,7 +60,7 @@ def revise_content(access_list, content_id_list):
         headers = {"Authorization": f"Bearer {access_key}"}
         print(headers)
         data = {"title": f"글 제목 수정 bot {rand_num}", "body": f"글 내용 수정 bot {rand_num}"}
-        response = requests.put(f"http://13.125.185.102/blog/{content_id}/",json=data, headers=headers)
+        response = requests.put(f"http://3.38.181.57/blog/{content_id}/",json=data, headers=headers)
         print(response.text)
         time.sleep(1)
     return f"{len(access_list)}개 봇 글 수정 완료!"
@@ -72,7 +72,7 @@ def delete_content(access_list, content_id_list):
     for access_key, content_id in zip(access_list, content_id_list):
         
         headers = {"Authorization": f"Bearer {access_key}"}
-        response = requests.delete(f"http://13.125.185.102/blog/{content_id}/", headers=headers)
+        response = requests.delete(f"http://3.38.181.57/blog/{content_id}/", headers=headers)
         time.sleep(1)
     
     return f"{len(access_list)}개 봇 생성한 글 삭제 완료!"

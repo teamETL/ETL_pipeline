@@ -16,7 +16,7 @@ def create_bot(num):
             "name" : f"bot{i}",
             "birth_date" : datetime.today().strftime("%Y-%m-%d"),
         }
-        response = requests.post("http://13.125.185.102/user/signup/", json=bot_form)
+        response = requests.post("http://3.38.181.57/user/signup/", json=bot_form)
 
     
     return  f"{num}개의 bot accounts 생성 complete"
