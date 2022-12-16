@@ -7,10 +7,8 @@ attrs==22.1.0
 backcall==0.2.0
 boto3==1.26.29
 botocore==1.29.29
-certifi @ file:///C:/b/abs_ac29jvt43w/croot/certifi_1665076682579/work/certifi
 cffi==1.15.1
 charset-normalizer==2.1.1
-chromedriver-autoinstaller==0.4.0
 colorama==0.4.6
 cryptography==38.0.3
 debugpy==1.5.1
@@ -56,8 +54,6 @@ pickleshare==0.7.5
 Pillow==9.3.0
 prompt-toolkit==3.0.20
 psutil==5.9.0
-psycopg2==2.9.5
-psycopg2-binary==2.9.5
 ptyprocess==0.7.0
 pure-eval==0.2.2
 pycparser==2.21
