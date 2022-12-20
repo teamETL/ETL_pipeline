@@ -4,7 +4,7 @@ import gzip
 import environ
 import os
 
-BASE_DIR=Path.home()/'etl'/'ETL_pipeline'
+BASE_DIR=Path(__file__).resolve().parent.parent
 
 
 env = environ.Env(DEBUG=(bool, True))
