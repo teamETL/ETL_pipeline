@@ -6,7 +6,7 @@ def create_bot(num):
 
     # 봇 생성 숫자 조절
 
-    for i in range(4,num+1):
+    for i in range(1,num+1):
         bot_form = {
             "email": f"bot{i}@bot.com",
             "nickname" : f"bot{i}",
@@ -31,4 +31,4 @@ def create_bot(num):
 
 if __name__ == '__main__':
     # 원하는 bot 개수 입력
-    create_bot(10)
+    create_bot(30)

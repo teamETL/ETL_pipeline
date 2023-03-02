@@ -15,3 +15,4 @@ logs/compressed_log.gz
 logs/board_request.log
 logkey.key
 logs/board_logging.log
+.pyc

@@ -22,17 +22,16 @@ def compressor():
     print("abs logfile_path = ", logfile_path)
 
     compressfile_path = BASE_DIR/'logs'/'compressed_log.gz'
-
     with open(logfile_path,'rb') as f_in:
         with gzip.open(compressfile_path,'wb') as f_out:
-            f_out.writelines(f_in)  # ./logs/compressed_log.gz 압축 파일 생성
+            f_out.writelines(f_in)  # ./logs/compressed_log.gz 압축 파일 생성  
 
 
 def s3_upload():
     compressor() #encrypted_logs파일을 통해 압축된 로그 파일 생성하고 시작
 
     #s3 client 생성
-    s3 = boto3.client('s3', aws_access_key_id = 'AKIASZYOXK6XDGXTDQID', aws_secret_access_key='4Uw2m1pXEN68zGXeuuMw5Cw+8g+uMwyedmgSWBgh')
+    s3 = boto3.client('s3', aws_access_key_id = 'your_access_key', aws_secret_access_key='your_secret_key')
     
     
     bucket_name = 'logdata.min'    
