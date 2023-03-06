@@ -31,7 +31,7 @@ def s3_upload():
     compressor() #encrypted_logs파일을 통해 압축된 로그 파일 생성하고 시작
 
     #s3 client 생성
-    s3 = boto3.client('s3', aws_access_key_id = 'your_access_key', aws_secret_access_key='your_secret_key')
+    s3 = boto3.client('s3', aws_access_key_id = 'yours_access_key', aws_secret_access_key='your_secret_key')
     
     
     bucket_name = 'logdata.min'    
